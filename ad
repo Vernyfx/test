@@ -302,18 +302,16 @@ function()
                         pcall(function()
 
                             local RealName = Enemy.Name
+
+                            Enemy.Name = Enemy.Name .."Real"
                             
                             repeat
-
-                                if Enemy.Name ~= Enemy.Name .."Real" then
-                                    
-                                    Enemy.Name = Enemy.Name .."Real"
-
-                                end
 
                                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Enemy:GetModelCFrame()
 
                                 HitEnemy(_G.Settings.SelectedMap,Enemy.Name)
+
+                                print("GG")
 
                                 task.wait()
                                 
