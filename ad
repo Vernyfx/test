@@ -25,9 +25,6 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-if not isfile("VernyHub".."/ACS2"..game.Players.LocalPlayer.Name.."Runs.json") then
-    writefile("VernyHub".."/ACS2"..game.Players.LocalPlayer.Name.."Runs.json","0")
-end
 if not LPH_OBFUSCATED then 
     LPH_JIT_ULTRA = function(...) return (...) end;
     LPH_JIT_MAX = function(...) return (...) end;
@@ -298,7 +295,7 @@ function()
                 for i,SelectedName in pairs(_G.Settings.SelectedEnemies) do
 
                     if Enemy:GetAttribute("Health") > 0 and Enemy.Name:find(SelectedName) then
-                        
+                        print("NIGGAWHAT")
                         pcall(function()
 
                             local RealName = Enemy.Name
