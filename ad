@@ -291,29 +291,35 @@ function()
     while task.wait() do
         
         if CanDoPriority("AutoFarm") then
-            print("GG")
+
             for _,Enemy in pairs(workspace.Server.Enemies[_G.Settings.SelectedMap]:GetChildren()) do
 
-                if not Enemy:GetAttribute("Respawning") and not Enemy:GetAttribute("Died") and not Enemy:GetAttribute("Capturing") and Enemy:GetAttribute("Health") > 0 and table.find(_G.Settings.SelectedEnemies,Enemy.Name) then
-                    
+                for i,SelectedName in pairs(_G.Settings.SelectedEnemies) do
 
-                        local RealName = Enemy.Name
+                    if not Enemy:GetAttribute("Respawning") and not Enemy:GetAttribute("Died") and not Enemy:GetAttribute("Capturing") and Enemy:GetAttribute("Health") > 0 and Enemy.Name:find(SelectedName) then
                         
-                        repeat
+                        pcall(function()
 
-                            Enemy.Name = Enemy.Name .."Real"
-
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Enemy:GetModelCFrame()
-
-                            HitEnemy(Enemy)
-
-                            task.wait()
+                            local RealName = Enemy.Name
                             
-                        until not _G.Settings.AutoFarmEnemies or Enemy:GetAttribute("Health") <= 0 
+                            repeat
 
-                        Enemy.Name = RealName
+                                Enemy.Name = Enemy.Name .."Real"
 
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Enemy:GetModelCFrame()
 
+                                HitEnemy(Enemy)
+
+                                task.wait()
+                                
+                            until not _G.Settings.AutoFarmEnemies or Enemy:GetAttribute("Health") <= 0 
+
+                            Enemy.Name = RealName
+
+                        end)
+
+                    end
+                    
                 end
 
             end
