@@ -247,8 +247,9 @@ function Click()
     game:GetService("ReplicatedStorage").Bridge:FireServer("Attack", "Click")
 end
 
-function HitEnemy(Enemy)
-    game:GetService("ReplicatedStorage").Bridge:FireServer("Attack", "Click", Enemy)
+function HitEnemy(Map,Enemy)
+    game:GetService("ReplicatedStorage").Bridge:FireServer("Attack", "Click", workspace.Server.Enemies[Map][Enemy])
+
 end
 
 function EnemyDied(WhatToDo,Enemy)
@@ -304,11 +305,15 @@ function()
                             
                             repeat
 
-                                Enemy.Name = Enemy.Name .."Real"
+                                if Enemy.Name ~= Enemy.Name .."Real" then
+                                    
+                                    Enemy.Name = Enemy.Name .."Real"
+
+                                end
 
                                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Enemy:GetModelCFrame()
 
-                                HitEnemy(Enemy)
+                                HitEnemy(_G.Settings.SelectedMap,Enemy.Name)
 
                                 task.wait()
                                 
