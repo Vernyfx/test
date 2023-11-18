@@ -1,0 +1,347 @@
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/diepedyt/bui/main/arrayfield(rayfield)Modified.lua'))()
+
+---------
+
+_G.NowLoaded = false
+
+local Window = Rayfield:CreateWindow({
+	Name = "Verny Hub | Anime Catcher Sim",
+	LoadingTitle = "Anime Catcher Sim",
+	LoadingSubtitle = "by Vernyfr (discord)",
+	ConfigurationSaving = {
+		Enabled = true,
+		FolderName = "VernyHub", -- Create a custom folder for your hub/game
+		FileName = "ACS2"..game.Players.LocalPlayer.Name
+	},
+	KeySystem = false, -- Set this to true to use our key system
+	KeySettings = {
+		Title = "Sirius Hub",
+		Subtitle = "Key System",
+		Note = "Join the discord (discord.gg/sirius)",
+		FileName = "SiriusKey",
+		SaveKey = true,
+		GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+		Key = "Hello"
+	}
+})
+
+if not isfile("VernyHub".."/ACS2"..game.Players.LocalPlayer.Name.."Runs.json") then
+    writefile("VernyHub".."/ACS2"..game.Players.LocalPlayer.Name.."Runs.json","0")
+end
+if not LPH_OBFUSCATED then 
+    LPH_JIT_ULTRA = function(...) return (...) end;
+    LPH_JIT_MAX = function(...) return (...) end;
+    LPH_NO_VIRTUALIZE = function(...) return (...) end;
+end
+
+local Toggles = {}
+_G.SF = {}
+_G.AreaDropdowns = {}
+local insertedNumbers = {}
+function createOptimisedToggle(Tab, Name, ValueName, DoFunction, DontSpawn, DoAfterDestroy)
+    if true then
+        local ToggleNum = #Toggles + 1
+        table.insert(Toggles, ToggleNum)
+        local randomNum = 0
+        repeat
+            randomNum = math.random(55,22222)
+            task.wait(.01)
+        until not table.find(insertedNumbers, randomNum)
+        table.insert(insertedNumbers, randomNum)
+        --_G.SF[randomNum] = false
+        return Tab:CreateToggle({
+            Name = Name,
+            CurrentValue = _G.Settings[ValueName],
+            Flag = "Toggle"..ValueName,
+            Callback = function(Value)
+                _G.Settings[ValueName] = Value
+
+                if not _G.SF[randomNum] and _G.Settings[ValueName] then
+                    _G.SF[randomNum] = true
+                    if not DontSpawn then
+                        local ab = task.spawn(DoFunction)
+                        --warn("SPAWNED FUNCTION")
+                        repeat task.wait(.1) until not _G.Settings[ValueName]
+                        task.cancel(ab)
+                        _G.SF[randomNum] = false
+                        --warn("REMOVED FUNCTION")
+                        if DoAfterDestroy then
+                            task.spawn(DoAfterDestroy)
+                        end
+                    end
+                end
+
+            end
+        })
+    end
+end
+
+
+local LP = game.Players.LocalPlayer
+
+function getStudLength(target, fromCFrame)
+    if game.Players.LocalPlayer.Character and target then
+        distanceInStuds = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - target.Position).Magnitude
+    end
+    if fromCFrame and target then   
+        distanceInStuds = (fromCFrame.Position - target.Position).Magnitude
+    end
+    return distanceInStuds
+end
+
+local function SaveTableRequest(TableName, Request, Table)
+    if Request == "Update" then
+        if isfile and writefile then
+            writefile("VernyHub/"..game.PlaceId..TableName..game.Players.LocalPlayer.Name..".json",game:GetService("HttpService"):JSONEncode(Table))
+            return true
+        end
+    elseif Request == "Get" then
+        local table = {}
+        if isfile and readfile and isfile("VernyHub/"..game.PlaceId..TableName..game.Players.LocalPlayer.Name..".json") then
+            table = game:GetService("HttpService"):JSONDecode(readfile("VernyHub/"..game.PlaceId..TableName..game.Players.LocalPlayer.Name..".json"))
+        end
+        return table
+    end
+end
+
+local function InsertOptionsTable(GivenTable, Option)
+    if not table.find(GivenTable, Option) then
+        table.insert(GivenTable, Option)
+    else
+        local ItemToRemove = table.find(GivenTable, Option)
+        table.remove(GivenTable, ItemToRemove)
+    end
+    return GivenTable
+end
+
+local function createMultiSelectDropdown(Tab, SaveName, TableName, SelectedThing, Options)
+    
+    _G.Settings[TableName] = SaveTableRequest(SaveName,"Get")
+    print(_G.Settings[TableName], TableName)
+
+    local Label = Tab:CreateLabel("Selected "..SelectedThing..": "..table.concat(_G.Settings[TableName],", "))
+    
+    Tab:CreateButton({
+        Name = "Reset List",
+        Interact = 'Reset',
+        Callback = function()
+            _G.Settings[TableName] = {}
+            SaveTableRequest(SaveName, "Update", _G.Settings[TableName])
+            Label:Set("Selected "..SelectedThing..": "..table.concat(_G.Settings[TableName],", "))
+        end
+    })
+
+    local drop = Tab:CreateDropdown({
+        Name = "Select / Remove "..SelectedThing,
+        Options = Options,
+        CurrentOption = "None",
+        Flag = SaveName.."MultiDrop",
+        Callback = function(Option)
+            if _G.NowLoaded then
+                _G.Settings[TableName] = InsertOptionsTable(_G.Settings[TableName], Option)
+                SaveTableRequest(SaveName,"Update",_G.Settings[TableName])
+                Label:Set("Selected "..SelectedThing..": "..table.concat(_G.Settings[TableName],", "))
+            end
+        end
+    })
+
+    Tab:CreateButton({
+        Name = "Select All",
+        Interact = 'Reset',
+        Callback = function()
+            _G.Settings[TableName] = Options
+            SaveTableRequest(SaveName, "Update", _G.Settings[TableName])
+            Label:Set("Selected "..SelectedThing..": "..table.concat(_G.Settings[TableName],", "))
+        end
+    })
+
+    return {Label, drop}
+
+end
+
+local function CanDoPriority(Action)
+
+    local function doingThing(thing)
+        if thing == "AutoFarm" then
+            return true
+        end
+    end
+
+    local function leaveNotDoing(thing)
+        if thing == "Dungeon" then
+        elseif thing == "PickUpItems" then
+        end
+    end
+
+    table.sort(_G.Settings.Priorities, function(a, b)
+        return Priorities[a] > Priorities[b]
+    end)
+
+    local highestAction = nil
+    local highestPriority = 0
+    for i,v in pairs(_G.Settings.Priorities) do
+        if v > highestPriority then
+            highestAction = i
+            highestPriority = v
+        end
+    end
+
+    local actionsOverAction = {}
+    for i,v in pairs(_G.Settings.Priorities) do
+        if v > _G.Settings.Priorities[Action] then
+            table.insert(actionsOverAction, i)
+        end
+
+    end
+
+    if Action == highestAction then
+        coroutine.resume(coroutine.create(function()
+            task.wait(5)
+            if doingThing(Action) then
+                for i,v in pairs(_G.Settings.Priorities) do
+                    if i ~= Action then
+                        ----warn(i, Action)
+                        leaveNotDoing(i)
+                    end
+                end
+            end
+        end))
+        return true
+    end
+
+
+    for i,v in pairs(_G.Settings.Priorities) do
+        if table.find(actionsOverAction, i) and doingThing(i) then
+            return false
+        end
+    end
+
+    coroutine.resume(coroutine.create(function()
+        task.wait(5)
+        if doingThing(Action) then
+            for i,v in pairs(_G.Settings.Priorities) do
+                if i ~= Action then
+                    ----warn(i, Action)
+                    leaveNotDoing(i)
+                end
+            end
+        end
+    end))
+    return true
+
+end
+
+_G.Settings = {
+    -- Priorities
+    Priorities = {
+        ["AutoFarm"] = 1,
+    },
+    -- Main
+    SelectedMap = "",
+    SelectedEnemies = {},
+    AutoPunch = false,
+    AutoFarmEnemies = false,
+}
+
+function Click()
+    game:GetService("ReplicatedStorage").Bridge:FireServer("Attack", "Click")
+end
+
+function HitEnemy(Enemy)
+    game:GetService("ReplicatedStorage").Bridge:FireServer("Attack", "Click", Enemy)
+end
+
+function EnemyDied(WhatToDo,Enemy)
+    game:GetService("ReplicatedStorage").Bridge:FireServer("Capture", WhatToDo, Enemy)
+end
+
+local WhatToDo = {"Sell", "Capture"}
+
+local Maps = {}
+
+for i,v in pairs(workspace.Server.Enemies:GetChildren()) do
+    table.insert(Maps,v.Name)
+end
+
+local Enemies = {}
+
+for i,v in pairs(game:GetService("ReplicatedStorage").Enemies:GetDescendants()) do
+    if v:IsA("Model") and v.Parent:IsA("Folder") then
+        table.insert(Enemies,v.Name)
+    end
+end
+
+local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
+
+local MapDrop = Tab:CreateDropdown({
+    Name = "Select Map",
+    Options = Maps,
+    CurrentOption = "",
+    Multi = false, -- If MultiSelections is allowed
+    Flag = "SelectedMap", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Option)
+        _G.Settings.SelectedMap = Option
+    end,
+})
+
+createMultiSelectDropdown(Tab,"SelectedEnemies","SelectedEnemies", "Enemies",Enemies)
+
+createOptimisedToggle(Tab,"Auto Farm Selected Enemies", "AutoFarmEnemies",
+function()
+    while task.wait() do
+        
+        if CanDoPriority("AutoFarm") then
+
+            for _,Enemy in pairs(workspace.Server.Enemies[_G.Settings.SelectedMap]:GetChildren()) do
+
+                if not Enemy:GetAttribute("Respawning") and not Enemy:GetAttribute("Died") and not Enemy:GetAttribute("Capturing") and Enemy:GetAttribute("Health") > 0 and table.find(_G.Settings.SelectedEnemies,Enemy.Name) then
+                    
+                    pcall(function()
+
+                        local RealName = Enemy.Name
+                        
+                        repeat
+
+                            Enemy.Name = Enemy.Name .."Real"
+
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Enemy:GetModelCFrame()
+
+                            HitEnemy(Enemy)
+
+                            task.wait()
+                            
+                        until not _G.Settings.AutoFarmEnemies or Enemy:GetAttribute("Health") <= 0 
+
+                        Enemy.Name = RealName
+
+                    end)
+
+                end
+
+            end
+
+        end
+
+    end
+end)
+
+
+
+Rayfield:LoadConfiguration()
+task.wait(.2)
+_G.NowLoaded = true
+
+
+
+-- Anti Afk
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+wait(1)
+vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
+    if n == "Idle" then
+        game.Players.LocalPlayer:SetAttribute("Idle", false)
+    end
+end)
