@@ -356,6 +356,8 @@ for i,v in pairs(workspace.Islands:GetChildren()) do
     table.insert(Worlds,v.Name)
 end
 
+local TaskTypes = {"Islands","Eggs","Unique Pets","Rebirth","Coins"}
+
 local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
 
 local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
@@ -483,12 +485,11 @@ createOptimisedToggle(Tab,"Auto Claim Quests", "AutoClaimQuests",
 function()
     while task.wait() do
 
-        for a,v in pairs(GetData("tasks")) do
+        for a,b in pairs(TaskTypes) do
         
-            for Quest,_ in pairs(v) do
+            for i,v in pairs(GetData("tasks")) do
             
-                warn(v,Quest)
-
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.TasksService.RF.ClaimReward:InvokeServer(b,i)
                 task.wait()
             end
 
@@ -527,7 +528,7 @@ Tab:CreateButton({
 createOptimisedToggle(Tab,"Set World Multiplier From Anywhere (Any World)", "SetWorldMultiplier",
 function()
     while task.wait() do
-        print(_G.Settings.SelectedMultiWorld)
+
         game:GetService("ReplicatedStorage").Packages.Knit.Services.MapService.RF.SetIsland:InvokeServer(_G.Settings.SelectedMultiWorld)
         task.wait(1)
 
