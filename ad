@@ -25,7 +25,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-_G.Theme = "Yellow"
+
 
 if not LPH_OBFUSCATED then 
     LPH_JIT_ULTRA = function(...) return (...) end;
@@ -460,15 +460,16 @@ createMultiSelectDropdown(Tab,"SelectedPetsToGolden","SelectedPetsToGolden", "Pe
 
 task.spawn(function()
     while task.wait() do
-        GiftsTimer:Set("Next Gift: " .. game:GetService("Players").LocalPlayer.PlayerGui.Right.Frame.GiftsButton.Title.Text )
+        GiftsTimer:Set("Next Gift: " .. game:GetService("Players").LocalPlayer.PlayerGui.Right.Frame.GiftsButton.Title.Text)
         task.wait(.5)
+        print("GG")
     end
 end)
 
 Rayfield:LoadConfiguration()
 task.wait(2)
 _G.NowLoaded = true
-
+_G.Theme = "Yellow"
 
 -- Anti Afk
 local vu = game:GetService("VirtualUser")
