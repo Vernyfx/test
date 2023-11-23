@@ -249,6 +249,8 @@ _G.Settings = {
     SelectedPetsToGolden = {},
     AutoGoldenSelectedPets = {},
     AutoClaimQuests = false,
+    SetWorldMultiplier = false,
+    SelectedMultiWorld = "",
 }
 
 -- Locals
@@ -346,6 +348,12 @@ for i,v in pairs(game:GetService("ReplicatedStorage").Assets.Pets:GetDescendants
     if v:IsA("Model") and v.Parent:IsA("Folder") then
         table.insert(Pets,v.Name)
     end
+end
+
+local Worlds = {}
+
+for i,v in pairs(workspace.Islands:GetChildren()) do
+    table.insert(Worlds,v.Name)
 end
 
 local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
@@ -479,7 +487,7 @@ function()
             
                 ClaimQuest(v,Quest)
 
-                task.wait(1)
+                task.wait()
             end
 
         end
@@ -487,6 +495,41 @@ function()
     end
 end)
 
+
+local WorldsDrop = Tab:CreateDropdown({
+    Name = "Select World",
+    Options = Worlds,
+    CurrentOption = "",
+    Multi = false, -- If MultiSelections is allowed
+    Flag = "SelectedMultiWorld", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Option)
+        _G.Settings.SelectedMultiWorld = Option
+    end,
+})
+
+Tab:CreateButton({
+    Name = "Refresh Worlds",
+    Interact = 'Refresh',
+    Callback = function()
+        local Worlds2 = {}
+
+        for i,v in pairs(workspace.Islands:GetChildren()) do
+            table.insert(Worlds2,v.Name)
+        end
+
+        WorldsDrop:Refresh(Worlds2,"Select a World")
+    end
+})
+
+
+createOptimisedToggle(Tab,"Set World Multiplier", "SetWorldMultiplier",
+function()
+    while task.wait() do
+
+
+
+    end
+end)
 
 Rayfield:LoadConfiguration()
 task.wait(2)
