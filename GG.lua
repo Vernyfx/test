@@ -487,10 +487,11 @@ function()
 
         for a,b in pairs(TaskTypes) do
         
-            for i,v in pairs(GetData("tasks")) do
-            
+            for i,v in pairs(GetData("tasks")[b]) do
+                
                 game:GetService("ReplicatedStorage").Packages.Knit.Services.TasksService.RF.ClaimReward:InvokeServer(b,i)
                 task.wait()
+
             end
 
         end
