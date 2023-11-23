@@ -526,7 +526,8 @@ createOptimisedToggle(Tab,"Set World Multiplier", "SetWorldMultiplier",
 function()
     while task.wait() do
 
-
+        SetIslandMultiplier(_G.Settings.SelectedMultiWorld)
+        task.wait(1)
 
     end
 end)
