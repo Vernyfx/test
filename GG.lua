@@ -475,9 +475,10 @@ function()
 
         for a,v in pairs(GetData("tasks")) do
         
-            for _,Quest in pairs(v) do
+            for Quest,_ in pairs(v) do
             
-                print(_,Quest)
+                ClaimQuest(v,Quest)
+
                 task.wait(1)
             end
 
