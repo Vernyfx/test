@@ -1,7 +1,7 @@
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/diepedyt/bui/main/arrayfield(rayfield)Modified.lua'))()
 
 ---------
-_G.Theme = "Yellow"
+
 _G.NowLoaded = false
 
 local Window = Rayfield:CreateWindow({
@@ -25,6 +25,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
+_G.Theme = "Yellow"
 
 if not LPH_OBFUSCATED then 
     LPH_JIT_ULTRA = function(...) return (...) end;
@@ -240,6 +241,7 @@ _G.Settings = {
     -- Main
     AutoClick = false,
     AutoRebirth = false,
+    AutoClaimGifts = false,
 }
 
 -- Locals
@@ -278,7 +280,7 @@ local function ClaimGems(Map)
     game:GetService("ReplicatedStorage").Packages.Knit.Services.GemCollectorService.RF.RequestCollect:InvokeServer(Map)
 end
 
-local function ClaimGems(Number)
+local function ClaimTapRewards(Number)
     game:GetService("ReplicatedStorage").Packages.Knit.Services.TapPassService.RF.requestTapRewardClaim:InvokeServer(Number)
 end
 
@@ -333,8 +335,8 @@ function()
     while task.wait() do
 
         Click() -- Click Function
-        print("Clicked")
-        task.wait(.025)
+
+        task.wait(.01)
 
     end
 end)
@@ -350,6 +352,20 @@ function()
     end
 end)
 
+createOptimisedToggle(Tab,"Auto Claim Gifts", "AutoClaimGifts",
+function()
+    while task.wait() do
+
+        for i= 1,12 do
+        
+            RedeemTimeReward(i)
+            task.wait(.25)
+        end
+
+        task.wait(1)
+
+    end
+end)
 
 Rayfield:LoadConfiguration()
 task.wait(2)
@@ -369,3 +385,4 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
     end
 end)
 
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/ad'))()
