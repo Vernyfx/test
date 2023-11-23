@@ -248,6 +248,7 @@ _G.Settings = {
     AutoOpenEgg = false,
     SelectedPetsToGolden = {},
     AutoGoldenSelectedPets = {},
+    AutoClaimQuests = false,
 }
 
 -- Locals
@@ -466,10 +467,31 @@ function()
     end
 end)
 
+local Tab = Window:CreateTab("Misc", 4483362458) -- Title, Image
+
+createOptimisedToggle(Tab,"Auto Claim Quests", "AutoClaimQuests",
+function()
+    while task.wait() do
+
+        for a,v in pairs(GetData("tasks")) do
+        
+            for _,Quest in pairs(v) do
+            
+                ClaimQuest(v,Quest)
+                task.wait(.25)
+
+            end
+
+        end
+
+    end
+end)
+
+_G.Theme = "Yellow"
 Rayfield:LoadConfiguration()
 task.wait(2)
 _G.NowLoaded = true
-_G.Theme = "Yellow"
+
 
 -- Anti Afk
 local vu = game:GetService("VirtualUser")
