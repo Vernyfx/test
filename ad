@@ -5,13 +5,13 @@ local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/diep
 _G.NowLoaded = false
 
 local Window = Rayfield:CreateWindow({
-	Name = "Verny Hub | Anime Catcher Sim",
-	LoadingTitle = "Anime Catcher Sim",
+	Name = "Verny Hub | Elemental Dungeons",
+	LoadingTitle = "Elemental Dungeons",
 	LoadingSubtitle = "by Vernyfr (discord)",
 	ConfigurationSaving = {
 		Enabled = true,
 		FolderName = "VernyHub", -- Create a custom folder for your hub/game
-		FileName = "ACS2"..game.Players.LocalPlayer.Name
+		FileName = "ED"..game.Players.LocalPlayer.Name
 	},
 	KeySystem = false, -- Set this to true to use our key system
 	KeySettings = {
@@ -25,6 +25,9 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
+if not isfile("VernyHub".."/ED"..game.Players.LocalPlayer.Name.."Runs.json") then
+    writefile("VernyHub".."/ED"..game.Players.LocalPlayer.Name.."Runs.json","0")
+end
 if not LPH_OBFUSCATED then 
     LPH_JIT_ULTRA = function(...) return (...) end;
     LPH_JIT_MAX = function(...) return (...) end;
@@ -159,8 +162,10 @@ end
 local function CanDoPriority(Action)
 
     local function doingThing(thing)
-        if thing == "AutoFarm" then
+        if thing == "Dungeon" then
             return true
+        elseif thing == "PickUpItems" then
+            return _G.PickingUp
         end
     end
 
@@ -231,112 +236,128 @@ end
 _G.Settings = {
     -- Priorities
     Priorities = {
-        ["AutoFarm"] = 1,
+        ["Dungeon"] = 1,
+        ["PickUpItems"] = 2,
     },
     -- Main
-    SelectedMap = "",
-    SelectedEnemies = {},
-    AutoPunch = false,
-    AutoFarmEnemies = false,
+    AutoClick = false,
+    AutoRebirth = false,
 }
 
-function Click()
-    game:GetService("ReplicatedStorage").Bridge:FireServer("Attack", "Click")
+-- Locals
+
+local VirtualInputManager = game:GetService("VirtualInputManager")
+
+local MX,MY = 500,500
+
+local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
+
+-- Functions
+
+local function Click()
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.ClickService.RF.Click:InvokeServer()
 end
 
-function HitEnemy(Map,Enemy)
-    game:GetService("ReplicatedStorage").Bridge:FireServer("Attack", "Click", workspace.Server.Enemies[Map][Enemy])
-
+local function ClaimClickReward()
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.ClickService.RF.RedeemClickReward:InvokeServer()
 end
 
-function EnemyDied(WhatToDo,Enemy)
-    game:GetService("ReplicatedStorage").Bridge:FireServer("Capture", WhatToDo, Enemy)
+local function RedeemTimeReward(Number)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.GiftsService.RF.RequestRedeemGift:InvokeServer(Number)
 end
 
-local WhatToDo = {"Sell", "Capture"}
+local function RequestRebirth()
+    local ohInstance1 = game:GetService("Players").LocalPlayer
 
-local Maps = {}
-
-for i,v in pairs(workspace.Server.Enemies:GetChildren()) do
-    table.insert(Maps,v.Name)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.RebirthService.RF.RequestRebirth:InvokeServer(ohInstance1)
 end
 
-local Enemies = {}
+local function ClaimQuest(Type,Number)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.TasksService.RF.ClaimReward:InvokeServer(Type, Number)
+end
 
-for i,v in pairs(game:GetService("ReplicatedStorage").Enemies:GetDescendants()) do
-    if v:IsA("Model") and v.Parent:IsA("Folder") then
-        table.insert(Enemies,v.Name)
-    end
+local function ClaimGems(Map)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.GemCollectorService.RF.RequestCollect:InvokeServer(Map)
+end
+
+local function ClaimGems(Number)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.TapPassService.RF.requestTapRewardClaim:InvokeServer(Number)
+end
+
+local function UseItem(Item)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemsService.RF.RequestUseItem:InvokeServer(Item)
+end
+
+local function OpenEgg(Egg,Amount)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.OpenEgg:InvokeServer(Egg, Amount)
+end
+
+local function UpgradeStat(Stat)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.UpgradesService.RF.RequestUpgrade:InvokeServer(Stat)
+end
+
+local function RequestTeleport(World,IslandNumber)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.MapService.RF.RequestTeleport:InvokeServer(World, IslandNumber)
+end
+
+function SetIslandMultiplier(Island)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.MapService.RF.SetIsland:InvokeServer(Island)
+end
+
+function MakeGoldenPet(PetType)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Golden:InvokeServer(PetType)
+end
+
+function LevelPet(PetID,Level)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.RequestLevelUp:InvokeServer(PetID, Level)
+end
+
+function ClaimChest()
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.RebirthService.RF.RequestRebirthRewards:InvokeServer()
+end
+
+function GetData(Type)
+    return Knit.GetController("DataController").GetReplica("PlayerData").Data[Type]
+end
+
+function ClickScreen(X,Y)
+    VirtualInputManager:SendMouseButtonEvent(X, Y, 0, true, game, 1)
+    VirtualInputManager:SendMouseButtonEvent(X, Y, 0, false, game, 1)
 end
 
 local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
 
-local MapDrop = Tab:CreateDropdown({
-    Name = "Select Map",
-    Options = Maps,
-    CurrentOption = "",
-    Multi = false, -- If MultiSelections is allowed
-    Flag = "SelectedMap", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Option)
-        _G.Settings.SelectedMap = Option
-    end,
-})
+local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
-createMultiSelectDropdown(Tab,"SelectedEnemies","SelectedEnemies", "Enemies",Enemies)
 
-createOptimisedToggle(Tab,"Auto Farm Selected Enemies", "AutoFarmEnemies",
+createOptimisedToggle(Tab,"Auto Click", "AutoClick",
 function()
     while task.wait() do
-        
-        if CanDoPriority("AutoFarm") then
 
-            for _,Enemy in pairs(workspace.Server.Enemies[_G.Settings.SelectedMap]:GetChildren()) do
+        Click() -- Click Function
 
-                for i,SelectedName in pairs(_G.Settings.SelectedEnemies) do
-
-                    if Enemy:GetAttribute("Health") > 0 and Enemy.Name:find(SelectedName) then
-                        print("NIGGAWHAT")
-                        pcall(function()
-
-                            local RealName = Enemy.Name
-
-                            Enemy.Name = Enemy.Name .."Real"
-                            
-                            repeat
-
-                                print("RIp")
-
-                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Enemy:GetModelCFrame()
-
-                                HitEnemy(_G.Settings.SelectedMap,Enemy.Name)
-
-                                print("GG")
-
-                                task.wait()
-                                
-                            until not _G.Settings.AutoFarmEnemies or Enemy:GetAttribute("Health") <= 0 
-
-                            Enemy.Name = RealName
-
-                        end)
-
-                    end
-
-                end
-
-            end
-
-        end
+        task.wait(.025)
 
     end
 end)
 
+createOptimisedToggle(Tab,"Auto Rebirth", "AutoRebirth",
+function()
+    while task.wait() do
+
+        RequestRebirth() -- Rebirth Function
+
+        task.wait(1)
+
+    end
+end)
+
+print(#GetData("giftsRedeemed"))
 
 
 Rayfield:LoadConfiguration()
 task.wait(2)
 _G.NowLoaded = true
-
 
 
 -- Anti Afk
