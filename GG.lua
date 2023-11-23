@@ -477,6 +477,8 @@ end)
 
 local Tab = Window:CreateTab("Misc", 4483362458) -- Title, Image
 
+local Section = Tab:CreateSection("Quests",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
 createOptimisedToggle(Tab,"Auto Claim Quests", "AutoClaimQuests",
 function()
     while task.wait() do
@@ -522,11 +524,11 @@ Tab:CreateButton({
 })
 
 
-createOptimisedToggle(Tab,"Set World Multiplier From Anywhere (Must be unlocked)", "SetWorldMultiplier",
+createOptimisedToggle(Tab,"Set World Multiplier From Anywhere (Any World)", "SetWorldMultiplier",
 function()
     while task.wait() do
-
-        SetIslandMultiplier(_G.Settings.SelectedMultiWorld)
+        print(_G.Settings.SelectedMultiWorld)
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.MapService.RF.SetIsland:InvokeServer(_G.Settings.SelectedMultiWorld)
         task.wait(1)
 
     end
