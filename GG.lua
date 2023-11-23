@@ -522,7 +522,7 @@ Tab:CreateButton({
 })
 
 
-createOptimisedToggle(Tab,"Set World Multiplier", "SetWorldMultiplier",
+createOptimisedToggle(Tab,"Set World Multiplier From Anywhere (Must be unlocked)", "SetWorldMultiplier",
 function()
     while task.wait() do
 
