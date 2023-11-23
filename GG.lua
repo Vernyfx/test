@@ -25,7 +25,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-
+_G.Theme = "Yellow"
 
 if not LPH_OBFUSCATED then 
     LPH_JIT_ULTRA = function(...) return (...) end;
@@ -477,9 +477,8 @@ function()
         
             for _,Quest in pairs(v) do
             
-                ClaimQuest(v,Quest)
-                task.wait(.25)
-
+                print(_,Quest)
+                task.wait(1)
             end
 
         end
@@ -487,7 +486,7 @@ function()
     end
 end)
 
-_G.Theme = "Yellow"
+
 Rayfield:LoadConfiguration()
 task.wait(2)
 _G.NowLoaded = true
@@ -508,4 +507,4 @@ end)
 
 warn("Loaded")
 
--- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/ad'))()
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
