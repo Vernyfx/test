@@ -557,14 +557,3 @@ end)
 warn("Loaded")
 
 -- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
-
-
-local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
-
-function GetData(Type)
-    return Knit.GetController("DataController").GetReplica("PlayerData").Data[Type]
-end
-
-for i,v in pairs(GetData("tasks").Eggs) do
-    print(i,v)
-end
