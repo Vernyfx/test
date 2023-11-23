@@ -247,6 +247,7 @@ _G.Settings = {
     SelectedEgg = "",
     AutoOpenEgg = false,
     SelectedPetsToGolden = {},
+    AutoGoldenSelectedPets = {},
 }
 
 -- Locals
@@ -390,12 +391,6 @@ function()
     end
 end)
 
-
-
-
-local GiftsTimer = Tab:CreateLabel("Next Gift: 00:00")
-
-
 createOptimisedToggle(Tab,"Auto Claim Lucky Gifts", "AutoClaimLuckyGifts",
 function()
     while task.wait() do
@@ -439,7 +434,7 @@ local Dropdown = Tab:CreateDropdown({
 
 local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
-createOptimisedToggle(Tab,"Auto Open Selected Egg", "AutoOpenEgg",
+createOptimisedToggle(Tab,"Auto Open Selected Egg (Fast)", "AutoOpenEgg",
 function()
     while task.wait() do
 
@@ -453,16 +448,21 @@ local Tab = Window:CreateTab("Pets", 4483362458) -- Title, Image
 
 local Section = Tab:CreateSection("Golden",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
-createMultiSelectDropdown(Tab,"SelectedPetsToGolden","SelectedPetsToGolden", "Pets To Golden",Skills)
+createMultiSelectDropdown(Tab,"SelectedPetsToGolden","SelectedPetsToGolden", "Pets To Golden",Pets)
 
-
--- Timers and stuff
-
-task.spawn(function()
+createOptimisedToggle(Tab,"Auto Golden Selected Pets", "AutoGoldenSelectedPets",
+function()
     while task.wait() do
-        GiftsTimer:Set("Next Gift: " .. game:GetService("Players").LocalPlayer.PlayerGui.Right.Frame.GiftsButton.Title.Text)
-        task.wait(.5)
-        print("GG")
+
+        for _,Pet in pairs(_G.Settings.SelectedPetsToGolden) do
+        
+            MakeGoldenPet(Pet)
+            task.wait(.25)
+
+        end
+
+        task.wait(.25)
+
     end
 end)
 
@@ -484,6 +484,6 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
     end
 end)
 
-print("Loaded")
+warn("Loaded")
 
 -- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/ad'))()
