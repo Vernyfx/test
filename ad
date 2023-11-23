@@ -1,17 +1,17 @@
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/diepedyt/bui/main/arrayfield(rayfield)Modified.lua'))()
 
 ---------
-
+_G.Theme = "Yellow"
 _G.NowLoaded = false
 
 local Window = Rayfield:CreateWindow({
-	Name = "Verny Hub | Elemental Dungeons",
-	LoadingTitle = "Elemental Dungeons",
+	Name = "Banana Hub | Click Simulator",
+	LoadingTitle = "Click Simulator",
 	LoadingSubtitle = "by Vernyfr (discord)",
 	ConfigurationSaving = {
 		Enabled = true,
-		FolderName = "VernyHub", -- Create a custom folder for your hub/game
-		FileName = "ED"..game.Players.LocalPlayer.Name
+		FolderName = "Banana Hub", -- Create a custom folder for your hub/game
+		FileName = "CS"..game.Players.LocalPlayer.Name
 	},
 	KeySystem = false, -- Set this to true to use our key system
 	KeySettings = {
@@ -25,9 +25,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-if not isfile("VernyHub".."/ED"..game.Players.LocalPlayer.Name.."Runs.json") then
-    writefile("VernyHub".."/ED"..game.Players.LocalPlayer.Name.."Runs.json","0")
-end
+
 if not LPH_OBFUSCATED then 
     LPH_JIT_ULTRA = function(...) return (...) end;
     LPH_JIT_MAX = function(...) return (...) end;
@@ -335,7 +333,7 @@ function()
     while task.wait() do
 
         Click() -- Click Function
-
+        print("Clicked")
         task.wait(.025)
 
     end
@@ -351,8 +349,6 @@ function()
 
     end
 end)
-
-print(#GetData("giftsRedeemed"))
 
 
 Rayfield:LoadConfiguration()
@@ -372,3 +368,4 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
         game.Players.LocalPlayer:SetAttribute("Idle", false)
     end
 end)
+
