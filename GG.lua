@@ -489,7 +489,7 @@ function()
         
             for i,v in pairs(GetData("tasks")) do
             
-                game:GetService("ReplicatedStorage").Packages.Knit.Services.TasksService.RF.ClaimReward:InvokeServer(b,i)
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.TasksService.RF.ClaimReward:InvokeServer(b,v)
                 task.wait()
             end
 
