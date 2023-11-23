@@ -487,7 +487,7 @@ function()
         
             for Quest,_ in pairs(v) do
             
-                ClaimQuest(v,Quest)
+                warn(v,Quest)
 
                 task.wait()
             end
