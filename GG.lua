@@ -258,6 +258,7 @@ _G.Settings = {
     AutoUseSpins = false,
     SelectedBoosts = {},
     AutoUseBoosts = false,
+    AutoCollectGemGenerator = false,
 
 }
 
@@ -394,7 +395,7 @@ local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
 local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
 
-createOptimisedToggle(Tab,"Auto Click (Super Fast With Free Auto Click)", "AutoClick",
+createOptimisedToggle(Tab,"Auto Click (Fast With Free Auto Click)", "AutoClick",
 function()
     while task.wait() do
 
@@ -521,7 +522,7 @@ function()
         for _,Upgrade in pairs(_G.Settings.SelectedUpgrades) do
         
             UpgradeStat(Upgrade)
-            task.wait(.25)
+            task.wait(1)
 
         end
 
@@ -630,7 +631,6 @@ end)
 
 local Section = Tab:CreateSection("Spins",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
-
 createOptimisedToggle(Tab,"Auto Buy Daily Spins", "AutoBuyDailySpins",
 function()
     while task.wait() do
@@ -658,6 +658,22 @@ function()
     end
 end)
 
+local Section = Tab:CreateSection("Others",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+createOptimisedToggle(Tab,"Auto Collect Gem Generator When Max", "AutoCollectGemGenerator",
+function()
+    while task.wait() do
+
+        if game:GetService("Players").LocalPlayer.PlayerGui.GemCollector.Frame.Timer.Text:find("00:00:00") then
+
+            ClaimGems("Earth")
+            task.wait(1)
+
+        end
+
+    end
+end)
+
 Rayfield:LoadConfiguration()
 task.wait(2)
 _G.NowLoaded = true
@@ -679,3 +695,4 @@ end)
 warn("Loaded")
 
 -- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
+
