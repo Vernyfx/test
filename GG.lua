@@ -251,6 +251,14 @@ _G.Settings = {
     AutoClaimQuests = false,
     SetWorldMultiplier = false,
     SelectedMultiWorld = "",
+    SelectedUpgrades = {},
+    AutoBuySelectedUpgrades = false,
+    AutoClaimTapPassLevels = false,
+    AutoBuyDailySpins = false,
+    AutoUseSpins = false,
+    SelectedBoosts = {},
+    AutoUseBoosts = false,
+
 }
 
 -- Locals
@@ -309,6 +317,14 @@ local function RequestTeleport(World,IslandNumber)
     game:GetService("ReplicatedStorage").Packages.Knit.Services.MapService.RF.RequestTeleport:InvokeServer(World, IslandNumber)
 end
 
+local function BuyDailySpins(Number)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.SpinWheelService.RF.RequestBuySpins:InvokeServer(Number)
+end
+
+local function UseSpin()
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.SpinWheelService.RF.RequestSpin:InvokeServer()
+end
+
 function SetIslandMultiplier(Island)
     game:GetService("ReplicatedStorage").Packages.Knit.Services.MapService.RF.SetIsland:InvokeServer(Island)
 end
@@ -357,6 +373,21 @@ for i,v in pairs(workspace.Islands:GetChildren()) do
 end
 
 local TaskTypes = {"Islands","Eggs","Unique Pets","Rebirth","Coins"}
+
+local Upgrades = {}
+
+for i,v in pairs(GetData("upgrades")) do
+    table.insert(Upgrades,i)
+end
+
+local Boosts = {"Triple Coins Vial","Good Luck Vial","Ultra Luck Vial"}
+
+local BoostsName = {
+    ["Triple Coins Vial"] = "Triple Coins",
+    ["Good Luck Vial"] = "Good Luck",
+    ["Ultra Luck Vial"] = "Ultra Luck",
+}
+
 
 local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
 
@@ -477,6 +508,68 @@ function()
     end
 end)
 
+local Tab = Window:CreateTab("Upgrades", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+local WorldsDrop = Tab:CreateDropdown({
+    Name = "Select Upgrades",
+    Options = Upgrades,
+    CurrentOption = "",
+    Multi = false, -- If MultiSelections is allowed
+    Flag = "SelectedUpgrades", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Option)
+        _G.Settings.SelectedUpgrades = Option
+    end,
+})
+
+createOptimisedToggle(Tab,"Auto Buy Selected Upgrades", "AutoBuySelectedUpgrades",
+function()
+    while task.wait() do
+
+        for _,Upgrade in pairs(_G.Settings.SelectedUpgrades) do
+        
+            UpgradeStat(Upgrade)
+            task.wait(.25)
+
+        end
+
+    end
+end)
+
+local Tab = Window:CreateTab("Items", 4483362458) -- Title, Image
+
+local Section = Tab:CreateSection("Boosts",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+local WorldsDrop = Tab:CreateDropdown({
+    Name = "Select Boosts",
+    Options = Boosts,
+    CurrentOption = "",
+    Multi = false, -- If MultiSelections is allowed
+    Flag = "SelectedBoosts", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Option)
+        _G.Settings.SelectedBoosts = Option
+    end,
+})
+
+createOptimisedToggle(Tab,"Auto Use Boosts If Ran Out", "AutoUseBoosts",
+function()
+    while task.wait() do
+
+        for _,Boost in pairs(_G.Settings.SelectedBoosts) do
+        
+            if not game:GetService("Players").LocalPlayer.PlayerGui.Boosts.Frame:FindFirstChild(BoostsFrame[Boost]) then
+
+                UseItem(Boost)
+                task.wait(1)
+
+            end
+
+        end
+
+    end
+end)
+
 local Tab = Window:CreateTab("Misc", 4483362458) -- Title, Image
 
 local Section = Tab:CreateSection("Quests",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
@@ -499,6 +592,7 @@ function()
     end
 end)
 
+local Section = Tab:CreateSection("OP",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
 local WorldsDrop = Tab:CreateDropdown({
     Name = "Select World",
@@ -532,6 +626,52 @@ function()
 
         game:GetService("ReplicatedStorage").Packages.Knit.Services.MapService.RF.SetIsland:InvokeServer(_G.Settings.SelectedMultiWorld)
         task.wait(1)
+
+    end
+end)
+
+local Section = Tab:CreateSection("Pass",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+createOptimisedToggle(Tab,"Auto Claim Tap Pass Levels", "AutoClaimTapPassLevels",
+function()
+    while task.wait() do
+
+        for i= GetData("tapPassLevel"), 21 do
+
+            ClaimTapRewards(i)
+            task.wait(.025)
+
+        end
+
+    end
+end)
+
+local Section = Tab:CreateSection("Spins",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+
+createOptimisedToggle(Tab,"Auto Buy Daily Spins", "AutoBuyDailySpins",
+function()
+    while task.wait() do
+
+        for i= 1,3 do
+
+            BuyDailySpins(i)
+            task.wait(.25)
+
+        end
+
+        task.wait(2.5)
+
+    end
+end)
+
+createOptimisedToggle(Tab,"Auto Use Spins", "AutoUseSpins",
+function()
+    while task.wait() do
+
+        UseSpin()
+
+        task.wait(5)
 
     end
 end)
