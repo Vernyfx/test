@@ -394,7 +394,7 @@ local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
 local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
 
-createOptimisedToggle(Tab,"Auto Click", "AutoClick",
+createOptimisedToggle(Tab,"Auto Click (Super Fast With Free Auto Click)", "AutoClick",
 function()
     while task.wait() do
 
@@ -540,7 +540,7 @@ function()
 
         for _,Boost in pairs(_G.Settings.SelectedBoosts) do
         
-            if not game:GetService("Players").LocalPlayer.PlayerGui.Boosts.Frame:FindFirstChild(BoostsFrame[Boost]) then
+            if not game:GetService("Players").LocalPlayer.PlayerGui.Boosts.Frame:FindFirstChild(BoostsName[Boost]) then
 
                 UseItem(Boost)
                 task.wait(1)
