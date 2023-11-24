@@ -512,16 +512,7 @@ local Tab = Window:CreateTab("Upgrades", 4483362458) -- Title, Image
 
 local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
-local WorldsDrop = Tab:CreateDropdown({
-    Name = "Select Upgrades",
-    Options = Upgrades,
-    CurrentOption = "",
-    Multi = false, -- If MultiSelections is allowed
-    Flag = "SelectedUpgrades", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Option)
-        _G.Settings.SelectedUpgrades = Option
-    end,
-})
+createMultiSelectDropdown(Tab,"SelectedUpgrades","SelectedUpgrades", "Upgrades",Upgrades)
 
 createOptimisedToggle(Tab,"Auto Buy Selected Upgrades", "AutoBuySelectedUpgrades",
 function()
@@ -541,16 +532,7 @@ local Tab = Window:CreateTab("Items", 4483362458) -- Title, Image
 
 local Section = Tab:CreateSection("Boosts",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
-local WorldsDrop = Tab:CreateDropdown({
-    Name = "Select Boosts",
-    Options = Boosts,
-    CurrentOption = "",
-    Multi = false, -- If MultiSelections is allowed
-    Flag = "SelectedBoosts", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Option)
-        _G.Settings.SelectedBoosts = Option
-    end,
-})
+createMultiSelectDropdown(Tab,"SelectedBoosts","SelectedBoosts", "Boosts",Boosts)
 
 createOptimisedToggle(Tab,"Auto Use Boosts If Ran Out", "AutoUseBoosts",
 function()
