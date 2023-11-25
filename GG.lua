@@ -548,7 +548,7 @@ function()
         
             for _,Pet in pairs(GetData("pets")) do
 
-                if Pet.Name == Name:split(" | ")[2] then
+                if Pet.id == Name:split(" | ")[2] then
 
                     LevelPet(Pet.id,Pet.Level + 1)
                     task.wait(.05)
