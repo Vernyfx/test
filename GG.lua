@@ -263,9 +263,9 @@ _G.Settings = {
     PetsUsedForRainbow = 1,
     AutoRainbowSelectedPets = false,
     SelectedPetsToRainbow = {},
-    WebhookWaitMin = 10,
+    WebhookWaitMin = 1,
     AutoSendWebhook = false,
-
+    WebhookURL = "",
 }
 
 -- Locals
@@ -780,7 +780,7 @@ local Input = Tab:CreateInput({
     OnEnter = true, -- Will callback only if the user pressed ENTER while the box is focused.
     RemoveTextAfterFocusLost = true,
     Callback = function(Text)
-        writefile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. tostring(game.Players.LocalPlayer.Name).. "DiscordWebhook.json", Text)
+        _G.Settings.WebhookURL = Text
     end, 
  })
 
@@ -799,7 +799,7 @@ local Input = Tab:CreateInput({
 createOptimisedToggle(Tab,"Auto Send Webhook", "AutoSendWebhook",
 function()
     while task.wait() do
-        if isfile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. tostring(game.Players.LocalPlayer.Name).. "DiscordWebhook.json") then
+        if _G.Settings.WebhookURL ~= "" then
 
             local text = {
 
@@ -813,7 +813,7 @@ function()
             }
 
             HttpService = game:GetService("HttpService")
-            Webhook_URL = tostring(readfile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. tostring(game.Players.LocalPlayer.Name).. "DiscordWebhook.json"))
+            Webhook_URL = _G.Settings.WebhookURL
 
             local responce = request(
                 {
