@@ -606,37 +606,39 @@ createOptimisedToggle(Tab,"Auto Rainbow Selected Pets", "AutoRainbowSelectedPets
 function()
     while task.wait() do
 
-        for i,Name in pairs(_G.Settings.SelectedPetsToRainbow) do
+        repeat
+
+            for i,Name in pairs(_G.Settings.SelectedPetsToRainbow) do
         
-            for _,Pet in pairs(GetData("pets")) do
+                for _,Pet in pairs(GetData("pets")) do
+    
+                    if Pet.Name == Name and Pet.Modifier ~= "Rainbow" and Pet.Modifier ~= "Radiant" then
+    
+                        task.wait(.1)
+    
+                        if #_G.RainbowPetsTable < _G.Settings.PetsUsedForRainbow then
+    
+                            if not table.find(_G.RainbowPetsTable,Pet.id) then
+                                table.insert(_G.RainbowPetsTable,Pet.id)
+                                task.wait(.05)
+                            end
 
-                if Pet.Name == Name and Pet.Modifier ~= "Rainbow" and Pet.Modifier ~= "Radiant" then
-
-                    task.wait(.5)
-
-                    if #_G.RainbowPetsTable < _G.Settings.PetsUsedForRainbow then
-
-                        if not table.find(_G.RainbowPetsTable,Pet.id) then
-                            table.insert(_G.RainbowPetsTable,Pet.id)
-                            task.wait(.1)
                         end
-
-                    else
-
-                        task.wait(.5)
-                        MakeRainbowPet(_G.RainbowPetsTable)
-                        task.wait(.5)
-                        table.clear(_G.RainbowPetsTable)
-                        task.wait(1)
-                        
+    
                     end
-
+    
                 end
-
+    
             end
+            
+            task.wait(1)
 
-        end
+        until not _G.Settings.AutoRainbowSelectedPets or #_G.RainbowPetsTable >= _G.Settings.PetsUsedForRainbow
 
+        task.wait(.25)
+        MakeRainbowPet(_G.RainbowPetsTable)
+        task.wait(.25)
+        table.clear(_G.RainbowPetsTable)
         task.wait(1)
 
     end
