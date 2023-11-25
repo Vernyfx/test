@@ -595,16 +595,18 @@ function()
 
                     task.wait(.5)
 
-                    repeat
+                    if #_G.RainbowPetsTable < _G.Settings.PetsUsedForRainbow then
                         table.insert(_G.RainbowPetsTable,Pet.id)
                         task.wait(.2)
-                    until #_G.RainbowPetsTable >= _G.Settings.PetsUsedForRainbow or not _G.Settings.AutoRainbowSelectedPets
-                    
-                    task.wait(.5)
-                    MakeRainbowPet(_G.RainbowPetsTable)
-                    task.wait(.25)
-                    table.clear(_G.RainbowPetsTable)
-                    task.wait(.25)
+                    else
+
+                        task.wait(.5)
+                        MakeRainbowPet(_G.RainbowPetsTable)
+                        task.wait(.25)
+                        table.clear(_G.RainbowPetsTable)
+                        task.wait(.25)
+                        
+                    end
 
                 end
 
@@ -904,7 +906,7 @@ task.spawn(function()
 
                     "Name: " .. v.Name,
                     "Type: " .. v.Modifier,
-                    "Shiny? " .. CheckShiny(v.Shiny),
+                    "Shiny: " .. CheckShiny(v.Shiny),
                     "Temperament: " .. v.Temperament,
                     "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
@@ -959,7 +961,7 @@ task.spawn(function()
 
                     "Name: " .. v.Name,
                     "Type: " .. v.Modifier,
-                    "Shiny? " .. CheckShiny(v.Shiny),
+                    "Shiny: " .. CheckShiny(v.Shiny),
                     "Temperament: " .. v.Temperament,
                     "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
