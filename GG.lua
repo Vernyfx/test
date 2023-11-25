@@ -896,7 +896,7 @@ task.spawn(function()
 
                     "Name: " .. v.Name,
                     "Type: " .. v.Modifier,
-                    "Shiny? " .. v.Shiny,
+                    "Shiny? " .. tostring(v.Shiny),
                     "Temperament: " .. v.Temperament,
                     "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
@@ -948,10 +948,10 @@ task.spawn(function()
                 -- Send Webhook
 
                 local PetInfo = {
-                    
+
                     "Name: " .. v.Name,
                     "Type: " .. v.Modifier,
-                    "Shiny? " .. v.Shiny,
+                    "Shiny? " .. tostring(v.Shiny),
                     "Temperament: " .. v.Temperament,
                     "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
