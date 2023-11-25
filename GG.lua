@@ -773,16 +773,26 @@ local Tab = Window:CreateTab("Webhook", 11642692687) -- Title, Image
 
 local Section = Tab:CreateSection("Select",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
-local Input = Tab:CreateInput({
-    Name = "Enter Discord URL",
-    PlaceholderText = "URL",
-    NumbersOnly = false, -- If the user can only type numbers. Remove if none.
-    OnEnter = true, -- Will callback only if the user pressed ENTER while the box is focused.
+_G.Settings.WebhookURL = saveTable("WebhookURL","Get")
+if type(_G.Settings.WebhookURL) == "table" then
+    _G.Settings.WebhookURL = ""
+end
+
+local WebhookURLLabel = Tab:CreateLabel("Webhook URL: ".._G.Settings.WebhookURL)
+
+Tab:CreateInput({
+    Name = "Enter your Webhook URL",
+    PlaceholderText = "link",
+    NumbersOnly = false, -- If the user can only type numbers.
+    OnEnter = true, -- Will callback only if the user pressed ENTER while being focused.
     RemoveTextAfterFocusLost = true,
     Callback = function(Text)
+        Text = tostring(Text)
         _G.Settings.WebhookURL = Text
-    end, 
- })
+        saveTable("WebhookURL","Update",_G.Settings.WebhookURL)
+        WebhookURLLabel:Set("Webhook URL: ".._G.Settings.WebhookURL)
+    end
+})
 
  local Slider = Tab:CreateSlider({
     Name = "Time To Wait Each Webhook",
