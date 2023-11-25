@@ -337,6 +337,14 @@ local function UseSpin()
     game:GetService("ReplicatedStorage").Packages.Knit.Services.SpinWheelService.RF.RequestSpin:InvokeServer()
 end
 
+local function CheckShiny(IsShiny)
+    if IsShiny then
+        return "Yes"
+    else
+        return "No"
+    end
+end
+
 function SetIslandMultiplier(Island)
     game:GetService("ReplicatedStorage").Packages.Knit.Services.MapService.RF.SetIsland:InvokeServer(Island)
 end
@@ -896,7 +904,7 @@ task.spawn(function()
 
                     "Name: " .. v.Name,
                     "Type: " .. v.Modifier,
-                    "Shiny? " .. tostring(v.Shiny),
+                    "Shiny? " .. CheckShiny(v.Shiny),
                     "Temperament: " .. v.Temperament,
                     "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
@@ -951,7 +959,7 @@ task.spawn(function()
 
                     "Name: " .. v.Name,
                     "Type: " .. v.Modifier,
-                    "Shiny? " .. tostring(v.Shiny),
+                    "Shiny? " .. CheckShiny(v.Shiny),
                     "Temperament: " .. v.Temperament,
                     "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
