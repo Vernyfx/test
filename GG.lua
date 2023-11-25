@@ -548,8 +548,6 @@ function()
         
             for _,Pet in pairs(GetData("pets")) do
 
-                print(Name:split(" | ")[2])
-
                 if Pet.id == Name:split(" | ")[2] then
 
                     LevelPet(Pet.id,Pet.Level + 1)
