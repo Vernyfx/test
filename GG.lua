@@ -266,6 +266,7 @@ _G.Settings = {
     WebhookWaitMin = 1,
     AutoSendWebhook = false,
     WebhookURL = "",
+    AutoSendWebhookPets = false,
 }
 
 -- Locals
@@ -275,6 +276,8 @@ local VirtualInputManager = game:GetService("VirtualInputManager")
 local MX,MY = 500,500
 
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
+
+local PetFrame = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("PetInventory"):WaitForChild("Frame"):WaitForChild("ScrollingFrame")
 
 -- Functions
 
@@ -855,6 +858,141 @@ function()
     end
 end)
 
+createMultiSelectDropdown(Tab,"SelectedPetsWebhook","SelectedPetsWebhook", "Pets",LoadedPets)
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto Send Webhook When New Pet",
+    CurrentValue = false,
+    Flag = "AutoSendWebhookPets", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+        _G.Settings.AutoSendWebhookPets = Value
+    end,
+})
+
+local OldInventory2 = {}
+
+for i,v in pairs(PetFrame:GetChildren()) do
+   if v:IsA("Frame") and v.Name ~= "FillerIcon" then
+       table.insert(OldInventory2,v.Name)
+   end
+end
+
+task.spawn(function()
+    if not _G.Settings.AutoSendWebhookPets then
+        repeat
+            task.wait()
+        until _G.Settings.AutoSendWebhookPets
+        PetFrame.ChildAdded:Connect(function(child)
+            if child:IsA("Frame") and child.Name ~= "FillerIcon" and child:FindFirstChild("Inner") then
+                -- Send Webhook
+
+                local PetInfo = {
+
+                    "Name: " .. GetData("pets")[v.Name].Name,
+                    "Type: " .. GetData("pets")[v.Name].Modifier,
+                    "Shiny? " .. GetData("pets")[v.Name].Shiny,
+                    "Temperament: " .. GetData("pets")[v.Name].Temperament,
+                    "Multiplier: " .. child.Inner.multiplier.Text,
+
+                }
+
+                HttpService = game:GetService("HttpService")
+                Webhook_URL = _G.Settings.WebhookURL
+
+                local responce = request({
+                    Url = Webhook_URL,
+                        Method = "POST",
+                        Headers = {
+                        ["Content-Type"] = "application/json"
+                        },
+                        Body = HttpService:JSONEncode({
+                        ["content"] = "",
+                        ["embeds"] = {{
+                            ["title"] = "** Click Simulator **",
+                            ["type"] = "rich",
+                            ["color"] = tonumber(0xffffff),
+                            ["fields"] = {{
+                                    ["name"] = "**New Pet**",
+                                    ["value"] = table.concat(PetInfo),
+                                    ["inline"] = true
+                            }}
+                        }}
+                    })
+                })
+
+                print("GG")
+    
+                table.clear(OldInventory2)
+    
+                task.wait(.1)
+    
+                for i,v in pairs(PetFrame:GetChildren()) do
+                    if v:IsA("Frame") and v.Name ~= "FillerIcon" then
+                        table.insert(OldInventory2,v.Name)
+                    end
+                 end
+                 
+            end
+
+        end)
+    else
+        PetFrame.ChildAdded:Connect(function(child)
+            if not table.find(OldInventory2, child.Name) then
+                if child:IsA("Frame") and child.Name ~= "FillerIcon" and child:FindFirstChild("Inner") then
+                    -- Send Webhook
+            
+                    local PetInfo = {
+            
+                        "Name: " .. GetData("pets")[v.Name].Name,
+                        "Type: " .. GetData("pets")[v.Name].Modifier,
+                        "Shiny? " .. GetData("pets")[v.Name].Shiny,
+                        "Temperament: " .. GetData("pets")[v.Name].Temperament,
+                        "Multiplier: " .. child.Inner.multiplier.Text,
+            
+                    }
+            
+                    HttpService = game:GetService("HttpService")
+                    Webhook_URL = _G.Settings.WebhookURL
+            
+                    local responce = request({
+                        Url = Webhook_URL,
+                            Method = "POST",
+                            Headers = {
+                            ["Content-Type"] = "application/json"
+                            },
+                            Body = HttpService:JSONEncode({
+                            ["content"] = "",
+                            ["embeds"] = {{
+                                ["title"] = "** Click Simulator **",
+                                ["type"] = "rich",
+                                ["color"] = tonumber(0xffffff),
+                                ["fields"] = {{
+                                        ["name"] = "**New Pet**",
+                                        ["value"] = table.concat(PetInfo),
+                                        ["inline"] = true
+                                }}
+                            }}
+                        })
+                    })
+            
+                    print("GG")
+                
+                    table.clear(OldInventory2)
+                
+                    task.wait(.1)
+                
+                    for i,v in pairs(PetFrame:GetChildren()) do
+                        if v:IsA("Frame") and v.Name ~= "FillerIcon" then
+                            table.insert(OldInventory2,v.Name)
+                        end
+                     end
+                     
+                end
+            end
+        end)
+    end
+
+end)
 
 Rayfield:LoadConfiguration()
 task.wait(2)
