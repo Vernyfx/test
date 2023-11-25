@@ -394,6 +394,12 @@ for i,v in pairs(game:GetService("ReplicatedStorage").Assets.Pets:GetDescendants
     end
 end
 
+local LoadedPets = {}
+
+for i,v in pairs(GetData("pets")) do
+    table.insert(LoadedPets,v.Name .. " | " .. v.id .. " | " .. v.Nickname .. " | " .. v.Level)
+end
+
 local Worlds = {}
 
 for i,v in pairs(workspace.Islands:GetChildren()) do
@@ -518,8 +524,21 @@ local Tab = Window:CreateTab("Pets", 11642692687) -- Title, Image
 
 local Section = Tab:CreateSection("Level",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
-createMultiSelectDropdown(Tab,"SelectedPetsToLevel","SelectedPetsToLevel", "Pets To Level Up",Pets)
+_G.LoadedPetsOne = createMultiSelectDropdown(Tab,"SelectedPetsToLevel","SelectedPetsToLevel", "Pets To Level Up",LoadedPets)
 
+Tab:CreateButton({
+    Name = "Refresh Pets",
+    Interact = 'Refresh',
+    Callback = function()
+        local LoadedPets2 = {}
+
+        for i,v in pairs(GetData("pets")) do
+            table.insert(LoadedPets2,v.Name .. " | " .. v.id .. " | " .. v.Nickname .. " | " .. v.Level)
+        end
+
+        _G.LoadedPetsOne[2]:Refresh(LoadedPets2,"Select Pets")
+    end
+})
 
 createOptimisedToggle(Tab,"Auto Level Up Selected Pets", "AutoLevelSelectedPets",
 function()
@@ -529,7 +548,7 @@ function()
         
             for _,Pet in pairs(GetData("pets")) do
 
-                if Pet.Name == Name then
+                if Pet.Name == Name:split(" | ")[2] then
 
                     LevelPet(Pet.id,Pet.Level + 1)
                     task.wait(.05)
@@ -596,9 +615,12 @@ function()
                     task.wait(.5)
 
                     if #_G.RainbowPetsTable < _G.Settings.PetsUsedForRainbow then
-                        table.insert(_G.RainbowPetsTable,Pet.id)
-                        task.wait(.2)
-                        print(Pet.Name)
+
+                        if not table.find(_G.RainbowPetsTable,Pet.id) then
+                            table.insert(_G.RainbowPetsTable,Pet.id)
+                            task.wait(.2)
+                        end
+
                     else
 
                         task.wait(.5)
