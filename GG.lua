@@ -894,10 +894,10 @@ task.spawn(function()
 
                 local PetInfo = {
 
-                    "Name: " .. GetData("pets")[v.Name].Name,
-                    "Type: " .. GetData("pets")[v.Name].Modifier,
-                    "Shiny? " .. GetData("pets")[v.Name].Shiny,
-                    "Temperament: " .. GetData("pets")[v.Name].Temperament,
+                    "Name: " .. v.Name,
+                    "Type: " .. v.Modifier,
+                    "Shiny? " .. v.Shiny,
+                    "Temperament: " .. v.Temperament,
                     "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
                 }
@@ -948,11 +948,11 @@ task.spawn(function()
                 -- Send Webhook
 
                 local PetInfo = {
-
-                    "Name: " .. GetData("pets")[v.Name].Name,
-                    "Type: " .. GetData("pets")[v.Name].Modifier,
-                    "Shiny? " .. GetData("pets")[v.Name].Shiny,
-                    "Temperament: " .. GetData("pets")[v.Name].Temperament,
+                    
+                    "Name: " .. v.Name,
+                    "Type: " .. v.Modifier,
+                    "Shiny? " .. v.Shiny,
+                    "Temperament: " .. v.Temperament,
                     "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
                 }
