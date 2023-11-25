@@ -927,7 +927,7 @@ task.spawn(function()
                             ["color"] = tonumber(0xffffff),
                             ["fields"] = {{
                                     ["name"] = "**New Pet**",
-                                    ["value"] = table.concat(PetInfo),
+                                    ["value"] = table.concat(PetInfo,"\n"),
                                     ["inline"] = true
                             }}
                         }}
