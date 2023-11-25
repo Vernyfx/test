@@ -862,12 +862,7 @@ end)
 
 createMultiSelectDropdown(Tab,"SelectedPetsWebhook","SelectedPetsWebhook", "Pets",Pets)
 
-for i,v in pairs(GetData("pets")) do
-    if not table.find(PetsInventory,v.id) then
-        table.insert(PetsInventory,v.id)
-        task.wait()
-    end
-end
+
 
 local Toggle = Tab:CreateToggle({
     Name = "Auto Send Webhook When New Pet",
@@ -879,6 +874,13 @@ local Toggle = Tab:CreateToggle({
 })
 
 local PetsInventory = {}
+
+for i,v in pairs(GetData("pets")) do
+    if not table.find(PetsInventory,v.id) then
+        table.insert(PetsInventory,v.id)
+        task.wait()
+    end
+end
 
 task.spawn(function()
     if not _G.Settings.AutoSendWebhookPets then
