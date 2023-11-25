@@ -612,25 +612,23 @@ function()
 
                 if Pet.Name == Name and Pet.Modifier ~= "Rainbow" and Pet.Modifier ~= "Radiant" then
 
-                    task.wait(.1)
-
-                    print(#_G.RainbowPetsTable)
-                    print(_G.Settings.PetsUsedForRainbow)
+                    task.wait()
 
                     if #_G.RainbowPetsTable < _G.Settings.PetsUsedForRainbow then
 
                         if not table.find(_G.RainbowPetsTable,Pet.id) then
                             table.insert(_G.RainbowPetsTable,Pet.id)
-                            task.wait(.05)
+                            task.wait()
                         end
 
                     else
+
                         print("KYS")
-                        task.wait(.25)
+                        task.wait(.1)
                         MakeRainbowPet(_G.RainbowPetsTable)
-                        task.wait(.25)
+                        task.wait(.1)
                         table.clear(_G.RainbowPetsTable)
-                        task.wait(1)
+                        task.wait(.1)
                         
                     end
 
