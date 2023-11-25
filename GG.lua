@@ -267,6 +267,8 @@ _G.Settings = {
     AutoSendWebhook = false,
     WebhookURL = "",
     AutoSendWebhookPets = false,
+    SelectedPetsWebhook = {},
+    
 }
 
 -- Locals
@@ -858,7 +860,7 @@ function()
     end
 end)
 
-createMultiSelectDropdown(Tab,"SelectedPetsWebhook","SelectedPetsWebhook", "Pets",LoadedPets)
+createMultiSelectDropdown(Tab,"SelectedPetsWebhook","SelectedPetsWebhook", "Pets",Pets)
 
 local Toggle = Tab:CreateToggle({
     Name = "Auto Send Webhook When New Pet",
