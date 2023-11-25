@@ -618,16 +618,16 @@ function()
 
                         if not table.find(_G.RainbowPetsTable,Pet.id) then
                             table.insert(_G.RainbowPetsTable,Pet.id)
-                            task.wait(.2)
+                            task.wait(.1)
                         end
 
                     else
 
                         task.wait(.5)
                         MakeRainbowPet(_G.RainbowPetsTable)
-                        task.wait(.25)
+                        task.wait(.5)
                         table.clear(_G.RainbowPetsTable)
-                        task.wait(.25)
+                        task.wait(1)
                         
                     end
 
