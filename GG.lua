@@ -625,7 +625,7 @@ function()
                         end
 
                     else
-
+                        print("KYS")
                         task.wait(.25)
                         MakeRainbowPet(_G.RainbowPetsTable)
                         task.wait(.25)
