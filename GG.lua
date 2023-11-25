@@ -623,6 +623,10 @@ function()
 
                     else
 
+                        for i,v in pairs(_G.RainbowPetsTable) do
+                            print(i,v)
+                        end
+
                         task.wait(.1)
                         game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(_G.RainbowPetsTable)
                         task.wait(.1)
