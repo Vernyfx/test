@@ -598,6 +598,7 @@ function()
                     if #_G.RainbowPetsTable < _G.Settings.PetsUsedForRainbow then
                         table.insert(_G.RainbowPetsTable,Pet.id)
                         task.wait(.2)
+                        print(Pet.Name)
                     else
 
                         task.wait(.5)
