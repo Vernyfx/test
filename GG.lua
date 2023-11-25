@@ -268,7 +268,7 @@ _G.Settings = {
     WebhookURL = "",
     AutoSendWebhookPets = false,
     SelectedPetsWebhook = {},
-    
+
 }
 
 -- Locals
@@ -862,6 +862,13 @@ end)
 
 createMultiSelectDropdown(Tab,"SelectedPetsWebhook","SelectedPetsWebhook", "Pets",Pets)
 
+for i,v in pairs(GetData("pets")) do
+    if not table.find(PetsInventory,v.id) then
+        table.insert(PetsInventory,v.id)
+        task.wait()
+    end
+end
+
 local Toggle = Tab:CreateToggle({
     Name = "Auto Send Webhook When New Pet",
     CurrentValue = false,
@@ -871,21 +878,16 @@ local Toggle = Tab:CreateToggle({
     end,
 })
 
-local OldInventory2 = {}
-
-for i,v in pairs(PetFrame:GetChildren()) do
-   if v:IsA("Frame") and v.Name ~= "FillerIcon" then
-       table.insert(OldInventory2,v.Name)
-   end
-end
+local PetsInventory = {}
 
 task.spawn(function()
     if not _G.Settings.AutoSendWebhookPets then
         repeat
             task.wait()
         until _G.Settings.AutoSendWebhookPets
-        PetFrame.ChildAdded:Connect(function(child)
-            if child:IsA("Frame") and child.Name ~= "FillerIcon" and child:FindFirstChild("Inner") then
+        while task.wait(.25) do
+            for i,v in pairs(GetData("pets")) do
+                if not table.find(PetsInventory,v.id) then
                 -- Send Webhook
 
                 local PetInfo = {
@@ -894,7 +896,7 @@ task.spawn(function()
                     "Type: " .. GetData("pets")[v.Name].Modifier,
                     "Shiny? " .. GetData("pets")[v.Name].Shiny,
                     "Temperament: " .. GetData("pets")[v.Name].Temperament,
-                    "Multiplier: " .. child.Inner.multiplier.Text,
+                    "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
                 }
 
@@ -922,76 +924,76 @@ task.spawn(function()
                     })
                 })
 
-                print("GG")
-    
-                table.clear(OldInventory2)
-    
-                task.wait(.1)
-    
-                for i,v in pairs(PetFrame:GetChildren()) do
-                    if v:IsA("Frame") and v.Name ~= "FillerIcon" then
-                        table.insert(OldInventory2,v.Name)
-                    end
-                 end
-                 
-            end
+                table.clear(PetsInventory)
 
-        end)
-    else
-        PetFrame.ChildAdded:Connect(function(child)
-            if not table.find(OldInventory2, child.Name) then
-                if child:IsA("Frame") and child.Name ~= "FillerIcon" and child:FindFirstChild("Inner") then
-                    -- Send Webhook
-            
-                    local PetInfo = {
-            
-                        "Name: " .. GetData("pets")[v.Name].Name,
-                        "Type: " .. GetData("pets")[v.Name].Modifier,
-                        "Shiny? " .. GetData("pets")[v.Name].Shiny,
-                        "Temperament: " .. GetData("pets")[v.Name].Temperament,
-                        "Multiplier: " .. child.Inner.multiplier.Text,
-            
-                    }
-            
-                    HttpService = game:GetService("HttpService")
-                    Webhook_URL = _G.Settings.WebhookURL
-            
-                    local responce = request({
-                        Url = Webhook_URL,
-                            Method = "POST",
-                            Headers = {
-                            ["Content-Type"] = "application/json"
-                            },
-                            Body = HttpService:JSONEncode({
-                            ["content"] = "",
-                            ["embeds"] = {{
-                                ["title"] = "** Click Simulator **",
-                                ["type"] = "rich",
-                                ["color"] = tonumber(0xffffff),
-                                ["fields"] = {{
-                                        ["name"] = "**New Pet**",
-                                        ["value"] = table.concat(PetInfo),
-                                        ["inline"] = true
-                                }}
-                            }}
-                        })
-                    })
-            
-                    print("GG")
-                
-                    table.clear(OldInventory2)
-                
-                    task.wait(.1)
-                
-                    for i,v in pairs(PetFrame:GetChildren()) do
-                        if v:IsA("Frame") and v.Name ~= "FillerIcon" then
-                            table.insert(OldInventory2,v.Name)
-                        end
-                     end
-                     
+                task.wait(.1)
+
+                for i,v in pairs(GetData("pets")) do
+                    if not table.find(PetsInventory,v.id) then
+                        table.insert(PetsInventory,v.id)
+                        task.wait()
+                    end
+                end
+
                 end
             end
-        end)
+            task.wait(.25)
+        end
+    else
+        while task.wait(.25) do
+            for i,v in pairs(GetData("pets")) do
+                if not table.find(PetsInventory,v.id) then
+                -- Send Webhook
+
+                local PetInfo = {
+
+                    "Name: " .. GetData("pets")[v.Name].Name,
+                    "Type: " .. GetData("pets")[v.Name].Modifier,
+                    "Shiny? " .. GetData("pets")[v.Name].Shiny,
+                    "Temperament: " .. GetData("pets")[v.Name].Temperament,
+                    "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
+
+                }
+
+                HttpService = game:GetService("HttpService")
+                Webhook_URL = _G.Settings.WebhookURL
+
+                local responce = request({
+                    Url = Webhook_URL,
+                        Method = "POST",
+                        Headers = {
+                        ["Content-Type"] = "application/json"
+                        },
+                        Body = HttpService:JSONEncode({
+                        ["content"] = "",
+                        ["embeds"] = {{
+                            ["title"] = "** Click Simulator **",
+                            ["type"] = "rich",
+                            ["color"] = tonumber(0xffffff),
+                            ["fields"] = {{
+                                    ["name"] = "**New Pet**",
+                                    ["value"] = table.concat(PetInfo),
+                                    ["inline"] = true
+                            }}
+                        }}
+                    })
+                })
+
+                table.clear(PetsInventory)
+
+                task.wait(.1)
+
+                for i,v in pairs(GetData("pets")) do
+                    if not table.find(PetsInventory,v.id) then
+                        table.insert(PetsInventory,v.id)
+                        task.wait()
+                    end
+                end
+
+                end
+            end
+            task.wait(.25)
+        end
     end
 
 end)
