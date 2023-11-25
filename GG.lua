@@ -1,7 +1,7 @@
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/diepedyt/bui/main/arrayfield(rayfield)Modified.lua'))()
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/Arrayfield/main/Modified.lua'))()
 
 ---------
-
+_G.Theme = "Yellow"
 _G.NowLoaded = false
 
 local Window = Rayfield:CreateWindow({
@@ -25,7 +25,6 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-_G.Theme = "Yellow"
 
 if not LPH_OBFUSCATED then 
     LPH_JIT_ULTRA = function(...) return (...) end;
@@ -259,6 +258,13 @@ _G.Settings = {
     SelectedBoosts = {},
     AutoUseBoosts = false,
     AutoCollectGemGenerator = false,
+    SelectedPetsToLevel = {},
+    AutoLevelSelectedPets = false,
+    PetsUsedForRainbow = 1,
+    AutoRainbowSelectedPets = false,
+    SelectedPetsToRainbow = {},
+    WebhookWaitMin = 10,
+    AutoSendWebhook = false,
 
 }
 
@@ -334,6 +340,14 @@ function MakeGoldenPet(PetType)
     game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Golden:InvokeServer(PetType)
 end
 
+function MakeRainbowPet(PetsTable)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(PetsTable)
+end
+
+function MakeRadiantPet(PetsTable)
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.RadiantService.RF.requestRadiantPetSlot:InvokeServer(PetsTable)
+end
+
 function LevelPet(PetID,Level)
     game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.RequestLevelUp:InvokeServer(PetID, Level)
 end
@@ -390,7 +404,7 @@ local BoostsName = {
 }
 
 
-local Tab = Window:CreateTab("Main", 4483362458) -- Title, Image
+local Tab = Window:CreateTab("Main", 11642692687) -- Title, Image
 
 local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
@@ -449,7 +463,7 @@ function()
     end
 end)
 
-local Tab = Window:CreateTab("Eggs", 4483362458) -- Title, Image
+local Tab = Window:CreateTab("Eggs", 11642692687) -- Title, Image
 
 local Section = Tab:CreateSection("Select",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
@@ -487,7 +501,36 @@ function()
     end
 end)
 
-local Tab = Window:CreateTab("Pets", 4483362458) -- Title, Image
+local Tab = Window:CreateTab("Pets", 11642692687) -- Title, Image
+
+local Section = Tab:CreateSection("Level",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+createMultiSelectDropdown(Tab,"SelectedPetsToLevel","SelectedPetsToLevel", "Pets To Level Up",Pets)
+
+
+createOptimisedToggle(Tab,"Auto Level Up Selected Pets", "AutoLevelSelectedPets",
+function()
+    while task.wait() do
+
+        for i,Name in pairs(_G.Settings.SelectedPetsToLevel) do
+        
+            for _,Pet in pairs(GetData("pets")) do
+
+                if Pet.Name == Name then
+
+                    LevelPet(Pet.id,Pet.Level + 1)
+                    task.wait(.05)
+
+                end
+
+            end
+
+        end
+
+        task.wait(.25)
+
+    end
+end)
 
 local Section = Tab:CreateSection("Golden",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
@@ -509,7 +552,59 @@ function()
     end
 end)
 
-local Tab = Window:CreateTab("Upgrades", 4483362458) -- Title, Image
+local Section = Tab:CreateSection("Rainbow",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+createMultiSelectDropdown(Tab,"SelectedPetsToRainbow","SelectedPetsToRainbow", "Pets To Rainbow",Pets)
+
+local Slider = Tab:CreateSlider({
+   Name = "Pets To Use For Rainbow",
+   Range = {1, 5},
+   Increment = 1,
+   Suffix = "Pets",
+   CurrentValue = 5,
+   Flag = "PetsUsedForRainbow",
+   Callback = function(Value)
+      _G.Settings.PetsUsedForRainbow = Value
+   end,
+})
+
+_G.RainbowPetsTable = {}
+
+createOptimisedToggle(Tab,"Auto Rainbow Selected Pets", "AutoRainbowSelectedPets",
+function()
+    while task.wait() do
+
+        for i,Name in pairs(_G.Settings.SelectedPetsToRainbow) do
+        
+            for _,Pet in pairs(GetData("pets")) do
+
+                if Pet.Name == Name and Pet.Modifier ~= "Rainbow" and Pet.Modifier ~= "Radiant" then
+
+                    task.wait(.5)
+
+                    repeat
+                        table.insert(_G.RainbowPetsTable,Pet.id)
+                        task.wait(.2)
+                    until #_G.RainbowPetsTable >= _G.Settings.PetsUsedForRainbow or not _G.Settings.AutoRainbowSelectedPets
+                    
+                    task.wait(.5)
+                    MakeRainbowPet(_G.Settings.PetsUsedForRainbow)
+                    task.wait(.25)
+                    table.clear(_G.Settings.PetsUsedForRainbow)
+                    task.wait(.25)
+
+                end
+
+            end
+
+        end
+
+        task.wait(1)
+
+    end
+end)
+
+local Tab = Window:CreateTab("Upgrades", 11642692687) -- Title, Image
 
 local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
@@ -529,7 +624,7 @@ function()
     end
 end)
 
-local Tab = Window:CreateTab("Items", 4483362458) -- Title, Image
+local Tab = Window:CreateTab("Items", 11642692687) -- Title, Image
 
 local Section = Tab:CreateSection("Boosts",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
@@ -553,7 +648,7 @@ function()
     end
 end)
 
-local Tab = Window:CreateTab("Misc", 4483362458) -- Title, Image
+local Tab = Window:CreateTab("Misc", 11642692687) -- Title, Image
 
 local Section = Tab:CreateSection("Quests",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
@@ -674,6 +769,83 @@ function()
     end
 end)
 
+local Tab = Window:CreateTab("Webhook", 11642692687) -- Title, Image
+
+local Section = Tab:CreateSection("Select",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+local Input = Tab:CreateInput({
+    Name = "Enter Discord URL",
+    PlaceholderText = "URL",
+    NumbersOnly = false, -- If the user can only type numbers. Remove if none.
+    OnEnter = true, -- Will callback only if the user pressed ENTER while the box is focused.
+    RemoveTextAfterFocusLost = true,
+    Callback = function(Text)
+        writefile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. tostring(game.Players.LocalPlayer.Name).. "DiscordWebhook.json", Text)
+    end, 
+ })
+
+ local Slider = Tab:CreateSlider({
+    Name = "Time To Wait Each Webhook",
+    Range = {1, 60},
+    Increment = 1,
+    Suffix = "Minutes",
+    CurrentValue = 3,
+    Flag = "WebhookWaitMin", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+        _G.Settings.WebhookWaitMin = Value
+    end,
+})
+
+createOptimisedToggle(Tab,"Auto Send Webhook", "AutoSendWebhook",
+function()
+    while task.wait() do
+        if isfile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. tostring(game.Players.LocalPlayer.Name).. "DiscordWebhook.json") then
+
+            local text = {
+
+                "Coins: " ..  game:GetService("Players").LocalPlayer.leaderstats.Coins.Value,
+                "Gems: " ..  game:GetService("Players").LocalPlayer.leaderstats.Gems.Value,
+                "Pet Power: " ..  game:GetService("Players").LocalPlayer.leaderstats["Pet Power"].Value,
+                "Rank: " ..  workspace[game.Players.LocalPlayer.Name].HumanoidRootPart.NameTag.DataHolder.Rank.Text,
+                "Tap Pass Level: " ..  GetData("tapPassLevel"),
+                "Gem Generator Until Max: " ..  game:GetService("Players").LocalPlayer.PlayerGui.GemCollector.Frame.Timer.Text,
+                
+            }
+
+            HttpService = game:GetService("HttpService")
+            Webhook_URL = tostring(readfile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. tostring(game.Players.LocalPlayer.Name).. "DiscordWebhook.json"))
+
+            local responce = request(
+                {
+
+                    Url = Webhook_URL,
+                    Method = "POST",
+                    Headers = {
+                    ["Content-Type"] = "application/json"
+                    },
+                    Body = HttpService:JSONEncode({
+                    ["content"] = "",
+                    ["embeds"] = {{
+                        ["title"] = "**Game: Click Simulator **",
+                        ["type"] = "rich",
+                        ["color"] = tonumber(0xffffff),
+                        ["fields"] = {
+                            {
+                                ["name"] = "**Results: **",
+                                ["value"] = table.concat(text,'\n'),
+                                ["inline"] = true
+                            }
+                        }
+                    }}
+                    })
+                }
+                )
+            task.wait(_G.Settings.WebhookWaitMin * 60) 
+        end
+    end
+end)
+
+
 Rayfield:LoadConfiguration()
 task.wait(2)
 _G.NowLoaded = true
@@ -695,4 +867,3 @@ end)
 warn("Loaded")
 
 -- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
-
