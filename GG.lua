@@ -625,7 +625,7 @@ function()
 
                         print("KYS")
                         task.wait(.1)
-                        MakeRainbowPet(_G.RainbowPetsTable)
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(_G.RainbowPetsTable)
                         task.wait(.1)
                         table.clear(_G.RainbowPetsTable)
                         task.wait(.1)
