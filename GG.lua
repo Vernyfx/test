@@ -1,7 +1,7 @@
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/Arrayfield/main/Modified.lua'))()
 
 ---------
-_G.Theme = "Yellow"
+
 _G.NowLoaded = false
 
 local Window = Rayfield:CreateWindow({
@@ -588,9 +588,9 @@ function()
                     until #_G.RainbowPetsTable >= _G.Settings.PetsUsedForRainbow or not _G.Settings.AutoRainbowSelectedPets
                     
                     task.wait(.5)
-                    MakeRainbowPet(_G.Settings.PetsUsedForRainbow)
+                    MakeRainbowPet(_G.RainbowPetsTable)
                     task.wait(.25)
-                    table.clear(_G.Settings.PetsUsedForRainbow)
+                    table.clear(_G.RainbowPetsTable)
                     task.wait(.25)
 
                 end
