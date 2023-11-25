@@ -600,6 +600,8 @@ local Slider = Tab:CreateSlider({
    end,
 })
 
+_G.RainbowPetsTable = {}
+
 createOptimisedToggle(Tab,"Auto Rainbow Selected Pets", "AutoRainbowSelectedPets",
 function()
     while task.wait() do
@@ -610,24 +612,24 @@ function()
 
                 if Pet.Name == Name and Pet.Modifier ~= "Rainbow" and Pet.Modifier ~= "Radiant" then
 
-                    _G[Pet.Name.. "GG"] = {}
-
                     task.wait()
 
-                    if #_G[Pet.Name.. "GG"] < _G.Settings.PetsUsedForRainbow then
+                    if #_G.RainbowPetsTable < _G.Settings.PetsUsedForRainbow then
 
-                        if not table.find(_G[Pet.Name.. "GG"],Pet.id) then
-                            table.insert(_G[Pet.Name.. "GG"],Pet.id)
+                        if not table.find(_G.RainbowPetsTable,Pet.id) then
+                            table.insert(_G.RainbowPetsTable,Pet.id)
                             task.wait()
                         end
 
                     else
 
                         task.wait(.1)
-                        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(_G[Pet.Name.. "GG"])
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(_G.RainbowPetsTable)
                         task.wait(.1)
-                        table.clear(_G[Pet.Name.. "GG"])
+                        print("nigga1")
+                        table.clear(_G.RainbowPetsTable)
                         task.wait(.1)
+                        print("nigga2")
 
                     end
 
