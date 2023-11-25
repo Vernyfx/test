@@ -808,7 +808,7 @@ function()
                 "Pet Power: " ..  game:GetService("Players").LocalPlayer.leaderstats["Pet Power"].Value,
                 "Rank: " ..  workspace[game.Players.LocalPlayer.Name].HumanoidRootPart.NameTag.DataHolder.Rank.Text,
                 "Tap Pass Level: " ..  GetData("tapPassLevel"),
-                "Gem Generator Until Max: " ..  game:GetService("Players").LocalPlayer.PlayerGui.GemCollector.Frame.Timer.Text,
+                "Gem Generator " ..  game:GetService("Players").LocalPlayer.PlayerGui.GemCollector.Frame.Timer.Text,
                 
             }
 
