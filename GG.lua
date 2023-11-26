@@ -697,6 +697,7 @@ else
     end
 end
 
+_G.TeamInfoPar = {}
 
 local TeamDropdown = Tab:CreateDropdown({
     Name = "Select Team",
@@ -706,6 +707,20 @@ local TeamDropdown = Tab:CreateDropdown({
     Flag = "SelectedTeam", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
     Callback = function(Option)
         _G.Settings.SelectedTeam = Option
+        if #_G.TeamInfoPar > 0 then
+            table.clear(_G.TeamInfoPar)
+        end
+        local Team = readfile("Banana Hub/CS"..game.Players.LocalPlayer.Name.. "/Teams"..  tostring(_G.Settings.SelectedTeam).. ".json")
+        local a = game:GetService("HttpService"):JSONDecode(Team)
+        for i,v in pairs(a) do
+            local PetData = GetData("pets")[v]
+            local PetName = PetData.Name
+            local PetType = PetData.Modifier
+            local PetShiny = CheckShiny(Pet.Shiny)
+            local PetTemp = PetData.Temperament
+            local PetMulti = PetFrame[PetData.id].Inner.multiplier.Text
+            table.insert(_G.TeamInfoPar,"Name: "..PetName .. '\n' .. "Type: "..PetType .. '\n' .. "Shiny: "..PetShiny .. '\n' .."Temperament: "..PetTemp .. '\n' .."Multiplier: "..PetMulti .. '\n')
+        end
     end,
 })
 
@@ -727,8 +742,6 @@ local Input = Tab:CreateInput({
            MakeFolderMacroName("Teams")
            task.wait(.1)
            WriteFileMacroName("Teams", Text)
-       else
-           Notify("Yeat Hub","Macro Already Exists!",3)
        end
    end,
 })
@@ -781,6 +794,7 @@ Tab:CreateButton({
     end
 })
 
+local TeamInfo = Tab:CreateParagraph({Title = "Selected Team Info", Content = "Select a Team!"})
 
 
 local Tab = Window:CreateTab("Upgrades", 11642692687) -- Title, Image
@@ -1173,6 +1187,16 @@ task.spawn(function()
         end
     end
 
+end)
+
+task.spawn(function()
+    while task.wait(.5) do
+        if _G.Settings.SelectedTeam ~= "Select a team" or _G.Settings.SelectedTeam ~= "" then
+            TeamInfo:Set({Title = "Selected Team: ".._G.Settings.SelectedTeam, Content = table.concat(_G.TeamInfoPar,"\n")})
+        else
+            TeamInfo:Set({Title = "Selected Team Info", Content = "Select a Team!"})
+        end
+    end
 end)
 
 Rayfield:LoadConfiguration()
