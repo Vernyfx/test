@@ -612,7 +612,7 @@ function()
         
             for _,Pet in pairs(GetData("pets")) do
 
-                if Pet.Name == Name and Pet.Modifier ~= "Rainbow" and Pet.Modifier ~= "Radiant" then
+                if Pet.Name == Name and Pet.Modifier ~= "Rainbow" and Pet.Modifier ~= "Radiant" and Pet.Modifier == "Golden" then
 
                     task.wait()
 
@@ -624,10 +624,6 @@ function()
                         end
 
                     else
-
-                        for i,v in pairs(_G.RainbowPetsTable) do
-                            print(i,v,Pet.Name)
-                        end
 
                         task.wait(.1)
                         game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(_G.RainbowPetsTable)
@@ -808,7 +804,8 @@ function()
 
             ClaimGems("Earth")
             task.wait(1)
-
+            print("HOOK")
+            
         end
 
     end
