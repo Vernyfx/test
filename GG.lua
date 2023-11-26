@@ -684,6 +684,7 @@ if isfolder("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/Teams") then
         local file = v:split("\\")
         local pp = file[2]:split(".")
         table.insert(TeamsFolder,pp[1])
+        print(pp[1])
     end
 else
     makefolder("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/Teams")
@@ -692,6 +693,7 @@ else
         local file = v:split("\\")
         local pp = file[2]:split(".")
         table.insert(TeamsFolder,pp[1])
+        print(pp[1])
     end
 end
 
@@ -772,7 +774,7 @@ Tab:CreateButton({
 })
 
 Tab:CreateButton({
-    Name = "Unequip Selected Team",
+    Name = "Unequip Team",
     Interact = 'Unequip',
     Callback = function()
         game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.EquipBest:InvokeServer({})
