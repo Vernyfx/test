@@ -384,8 +384,8 @@ function ClickScreen(X,Y)
 end
 
 function WriteFileMacroName(FolderName,FileName)
-    if not isfile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. FolderName.."/"..FileName..".json") then
-        writefile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. FolderName.."/"..FileName..".json"," ")
+    if not isfile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. FolderName.."/"..FileName..".json") then
+        writefile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. FolderName.."/"..FileName..".json"," ")
     end
 end
 
