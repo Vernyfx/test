@@ -798,8 +798,7 @@ Tab:CreateButton({
     end
 })
 
-local TeamInfo = Tab:CreateParagraph({Title = "Selected Team Info", Content = "Select a Team!"})
-
+local TeamInfo = Tab:CreateLabel("Selected Team Info!")
 
 local Tab = Window:CreateTab("Upgrades", 11642692687) -- Title, Image
 
@@ -1196,9 +1195,9 @@ end)
 task.spawn(function()
     while task.wait(.5) do
         if _G.Settings.SelectedTeam ~= "Select a team" or _G.Settings.SelectedTeam ~= "" then
-            TeamInfo:Set({Title = "Selected Team: ".._G.Settings.SelectedTeam, Content = table.concat(_G.TeamInfoPar,"\n")})
+            TeamInfo:Set("Selected Team: ".._G.Settings.SelectedTeam ..'\n' .. table.concat(_G.TeamInfoPar,"\n"))
         else
-            TeamInfo:Set({Title = "Selected Team Info", Content = "Select a Team!"})
+            TeamInfo:Set("Select a Team")
         end
     end
 end)
