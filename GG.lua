@@ -738,7 +738,7 @@ Tab:CreateButton({
         _G.CPets = {}
 
         for i,v in pairs(GetData("petsEquipped")) do
-            table.insert(_G.CPets,v .. ", ")
+            table.insert(_G.CPets,v)
         end
 
         for i,v in pairs(_G.CPets) do
