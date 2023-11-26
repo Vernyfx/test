@@ -378,6 +378,10 @@ function ClickScreen(X,Y)
     VirtualInputManager:SendMouseButtonEvent(X, Y, 0, false, game, 1)
 end
 
+function GetCurrentWorld()
+
+end
+
 -- Tables 
 
 local Eggs = {}
