@@ -25,6 +25,10 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
+if not isfolder("Banana Hub/CS"..game.Players.LocalPlayer.Name) then
+    makefolder("Banana Hub/CS"..game.Players.LocalPlayer.Name)
+end
+
 
 if not LPH_OBFUSCATED then 
     LPH_JIT_ULTRA = function(...) return (...) end;
@@ -268,6 +272,7 @@ _G.Settings = {
     WebhookURL = "",
     AutoSendWebhookPets = false,
     SelectedPetsWebhook = {},
+    SelectedTeam = "",
 
 }
 
@@ -377,6 +382,27 @@ function ClickScreen(X,Y)
     VirtualInputManager:SendMouseButtonEvent(X, Y, 0, true, game, 1)
     VirtualInputManager:SendMouseButtonEvent(X, Y, 0, false, game, 1)
 end
+
+function WriteFileMacroName(FolderName,FileName)
+    if not isfile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. FolderName.."/"..FileName..".json") then
+        writefile("Banana Hub/CS"..game.Players.LocalPlayer.Name .. FolderName.."/"..FileName..".json"," ")
+    end
+end
+
+function MakeFolderMacroName(FolderName)
+    if not isfolder("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. FolderName) then
+        makefolder("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/" .. FolderName)
+    end
+end
+
+local UpdateTeamFile = LPH_JIT_MAX(function()
+    local jj
+    local HS = game:GetService("HttpService")
+    if writefile then
+        jj = HS:JSONEncode(_G.CPets)
+        writefile("Banana Hub/CS".. game.Players.LocalPlayer.Name .. "/Teams"..tostring(_G.Settings.SelectedTeam)..".json",jj)
+    end
+end)
 
 -- Tables 
 
@@ -647,6 +673,112 @@ function()
 
     end
 end)
+
+local Section = Tab:CreateSection("Teams",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+
+local TeamsFolder = {}
+
+if isfolder("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/Teams") then
+    for i,v in pairs(listfiles("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/Teams")) do
+        local file = v:split("\\")
+        local pp = file[2]:split(".")
+        table.insert(TeamsFolder,pp[1])
+    end
+else
+    makefolder("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/Teams")
+    task.wait(.1)
+    for i,v in pairs(listfiles("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/Teams")) do
+        local file = v:split("\\")
+        local pp = file[2]:split(".")
+        table.insert(TeamsFolder,pp[1])
+    end
+end
+
+
+local TeamDropdown = Tab:CreateDropdown({
+    Name = "Select Team",
+    Options = TeamsFolder,
+    CurrentOption = "Select a team",
+    Multi = false, -- If MultiSelections is allowed
+    Flag = "SelectedTeam", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Option)
+        _G.Settings.SelectedTeam = Option
+    end,
+})
+
+
+
+local Input = Tab:CreateInput({
+   Name = "Enter Team Name",
+   PlaceholderText = "Name",
+   NumbersOnly = false, -- If the user can only type numbers. Remove if none.
+   CharacterLimit = 30, --max character limit. Remove if none.
+   OnEnter = true, -- Will callback only if the user pressed ENTER while the box is focused.
+   RemoveTextAfterFocusLost = true,
+   Callback = function(Text)
+       if not table.find(TeamsFolder, Text) then
+           table.insert(TeamsFolder, Text)
+           task.wait(.1)
+           TeamDropdown:UpdateOptions(TeamsFolder)
+           task.wait(.1)
+           MakeFolderMacroName("Teams")
+           task.wait(.1)
+           WriteFileMacroName("Teams", Text)
+       else
+           Notify("Yeat Hub","Macro Already Exists!",3)
+       end
+   end,
+})
+
+Tab:CreateButton({
+    Name = "Save Selected Team",
+    Interact = 'Save',
+    Callback = function()
+        _G.CPets = {}
+
+        for i,v in pairs(GetData("petsEquipped")) do
+            table.insert(_G.CPets,v .. ", ")
+        end
+
+        for i,v in pairs(_G.CPets) do
+            print(i,v)
+        end
+
+        UpdateTeamFile()
+    end
+})
+
+
+Tab:CreateButton({
+    Name = "Equip Selected Team",
+    Interact = 'Equip',
+    Callback = function()
+        local Team = readfile("Banana Hub/CS"..game.Players.LocalPlayer.Name.. "/Teams"..  tostring(_G.Settings.SelectedTeam).. ".json")
+        _G.SavedTeam = game:GetService("HttpService"):JSONDecode(Team)
+        if #GetData("petsEquipped") > 0 then
+            game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.EquipBest:InvokeServer({})
+            task.wait(.25)
+            for i,v in pairs(_G.SavedTeam) do
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.TogglePet:InvokeServer(v)
+            end
+        elseif #GetData("petsEquipped") <= 0 then
+            task.wait(.25)
+            for i,v in pairs(_G.SavedTeam) do
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.TogglePet:InvokeServer(v)
+            end
+        end
+    end
+})
+
+Tab:CreateButton({
+    Name = "Unequip Selected Team",
+    Interact = 'Unequip',
+    Callback = function()
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.EquipBest:InvokeServer({})
+    end
+})
+
 
 
 local Tab = Window:CreateTab("Upgrades", 11642692687) -- Title, Image
