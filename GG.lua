@@ -722,7 +722,7 @@ local TeamDropdown = Tab:CreateDropdown({
                 local PetShiny = CheckShiny(PetData.Shiny)
                 local PetTemp = PetData.Temperament
                 local PetMulti = PetFrame[PetData.id].Inner.multiplier.Text
-                table.insert(_G.TeamInfoPar,"Pet: " .. i .. "Name: "..PetName .. ',' .. "Type: "..PetType .. ',' .. "Shiny: "..PetShiny .. ',' .."Temperament: "..PetTemp .. ',' .."Multiplier: "..PetMulti .. ',')
+                table.insert(_G.TeamInfoPar,"Pet: " .. i .. "Name: "..PetName .. '\n' .. "Type: "..PetType .. '\n' .. "Shiny: "..PetShiny .. '\n' .."Temperament: "..PetTemp .. '\n' .."Multiplier: "..PetMulti .. '\n')
             end
         end
     end,
