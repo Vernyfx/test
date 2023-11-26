@@ -584,6 +584,8 @@ function()
     end
 end)
 
+
+
 local Section = Tab:CreateSection("Rainbow",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
 createMultiSelectDropdown(Tab,"SelectedPetsToRainbow","SelectedPetsToRainbow", "Pets To Rainbow",Pets)
@@ -624,16 +626,14 @@ function()
                     else
 
                         for i,v in pairs(_G.RainbowPetsTable) do
-                            print(i,v)
+                            print(i,v,Pet.Name)
                         end
 
                         task.wait(.1)
                         game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(_G.RainbowPetsTable)
                         task.wait(.1)
-                        print("nigga1")
                         table.clear(_G.RainbowPetsTable)
                         task.wait(.1)
-                        print("nigga2")
 
                     end
 
@@ -647,6 +647,7 @@ function()
 
     end
 end)
+
 
 local Tab = Window:CreateTab("Upgrades", 11642692687) -- Title, Image
 
