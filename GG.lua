@@ -497,13 +497,17 @@ createOptimisedToggle(Tab,"Auto Claim Lucky Gifts", "AutoClaimLuckyGifts",
 function()
     while task.wait() do
 
-        if game:GetService("Players").LocalPlayer.PlayerGui.LuckyGift.Enabled then
-            
-            ClickScreen(MX,MY)
+        pcall(function()
 
-            task.wait(1)
+            if game:GetService("Players").LocalPlayer.PlayerGui.LuckyGift.Enabled then
+                
+                ClickScreen(MX,MY)
 
-        end
+                task.wait(1)
+
+            end
+
+        end)
 
     end
 end)
@@ -570,20 +574,24 @@ createOptimisedToggle(Tab,"Auto Level Up Selected Pets", "AutoLevelSelectedPets"
 function()
     while task.wait() do
 
-        for i,Name in pairs(_G.Settings.SelectedPetsToLevel) do
-        
-            for _,Pet in pairs(GetData("pets")) do
+        pcall(function()
 
-                if Pet.id == Name:split(" | ")[2] then
+            for i,Name in pairs(_G.Settings.SelectedPetsToLevel) do
+            
+                for _,Pet in pairs(GetData("pets")) do
 
-                    LevelPet(Pet.id,Pet.Level + 1)
-                    task.wait(.05)
+                    if Pet.id == Name:split(" | ")[2] then
+
+                        LevelPet(Pet.id,Pet.Level + 1)
+                        task.wait(.05)
+
+                    end
 
                 end
 
             end
 
-        end
+        end)
 
         task.wait(.25)
 
@@ -598,12 +606,16 @@ createOptimisedToggle(Tab,"Auto Golden Selected Pets", "AutoGoldenSelectedPets",
 function()
     while task.wait() do
 
-        for _,Pet in pairs(_G.Settings.SelectedPetsToGolden) do
-        
-            MakeGoldenPet(Pet)
-            task.wait(.25)
+        pcall(function()
 
-        end
+            for _,Pet in pairs(_G.Settings.SelectedPetsToGolden) do
+            
+                MakeGoldenPet(Pet)
+                task.wait(.25)
+
+            end
+
+        end)
 
         task.wait(.25)
 
@@ -638,32 +650,36 @@ function()
         
             for _,Pet in pairs(GetData("pets")) do
 
-                if Pet.Name == Name and Pet.Modifier ~= "Rainbow" and Pet.Modifier ~= "Radiant" and Pet.Modifier == "Golden" then
+                pcall(function()
 
-                    task.wait()
+                    if Pet.Name == Name and Pet.Modifier ~= "Rainbow" and Pet.Modifier ~= "Radiant" and Pet.Modifier == "Golden" then
 
-                    if #_G.RainbowPetsTable < _G.Settings.PetsUsedForRainbow then
+                        task.wait()
 
-                        if not table.find(_G.RainbowPetsTable,Pet.id) then
-                            table.insert(_G.RainbowPetsTable,Pet.id)
-                            task.wait()
+                        if #_G.RainbowPetsTable < _G.Settings.PetsUsedForRainbow then
+
+                            if not table.find(_G.RainbowPetsTable,Pet.id) then
+                                table.insert(_G.RainbowPetsTable,Pet.id)
+                                task.wait()
+                            end
+
+                        else
+
+                            for i,v in pairs(_G.RainbowPetsTable) do
+                                print(i,v,Pet.Name,Pet.Modifier)
+                            end
+
+                            task.wait(.1)
+                            game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(_G.RainbowPetsTable)
+                            task.wait(.1)
+                            table.clear(_G.RainbowPetsTable)
+                            task.wait(.1)
+
                         end
-
-                    else
-
-                        for i,v in pairs(_G.RainbowPetsTable) do
-                            print(i,v,Pet.Name,Pet.Modifier)
-                        end
-
-                        task.wait(.1)
-                        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(_G.RainbowPetsTable)
-                        task.wait(.1)
-                        table.clear(_G.RainbowPetsTable)
-                        task.wait(.1)
 
                     end
 
-                end
+                end)
 
             end
 
@@ -684,7 +700,6 @@ if isfolder("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/Teams") then
         local file = v:split("\\")
         local pp = file[2]:split(".")
         table.insert(TeamsFolder,pp[1])
-        print(pp[1])
     end
 else
     makefolder("Banana Hub/CS"..game.Players.LocalPlayer.Name .. "/Teams")
@@ -693,7 +708,6 @@ else
         local file = v:split("\\")
         local pp = file[2]:split(".")
         table.insert(TeamsFolder,pp[1])
-        print(pp[1])
     end
 end
 
@@ -708,6 +722,7 @@ local TeamDropdown = Tab:CreateDropdown({
     Callback = function(Option)
         _G.Settings.SelectedTeam = Option
 
+        --[[
         if #_G.TeamInfoPar > 0 then
             table.clear(_G.TeamInfoPar)
         end
@@ -725,6 +740,8 @@ local TeamDropdown = Tab:CreateDropdown({
                 table.insert(_G.TeamInfoPar,"Pet: " .. i .. "Name: "..PetName .. '\n' .. "Type: "..PetType .. '\n' .. "Shiny: "..PetShiny .. '\n' .."Temperament: "..PetTemp .. '\n' .."Multiplier: "..PetMulti .. '\n')
             end
         end
+        ]]--
+
     end,
 })
 
@@ -797,8 +814,9 @@ Tab:CreateButton({
         game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.EquipBest:InvokeServer({})
     end
 })
-
+--[[
 local TeamInfo = Tab:CreateLabel("Selected Team Info!")
+]]--
 
 local Tab = Window:CreateTab("Upgrades", 11642692687) -- Title, Image
 
@@ -831,13 +849,17 @@ function()
     while task.wait() do
 
         for _,Boost in pairs(_G.Settings.SelectedBoosts) do
+
+            pcall(function()
         
-            if not game:GetService("Players").LocalPlayer.PlayerGui.Boosts.Frame:FindFirstChild(BoostsName[Boost]) then
+                if not game:GetService("Players").LocalPlayer.PlayerGui.Boosts.Frame:FindFirstChild(BoostsName[Boost]) then
 
-                UseItem(Boost)
-                task.wait(1)
+                    UseItem(Boost)
+                    task.wait(1)
 
-            end
+                end
+
+            end)
 
         end
 
@@ -955,13 +977,16 @@ createOptimisedToggle(Tab,"Auto Collect Gem Generator When Max", "AutoCollectGem
 function()
     while task.wait() do
 
-        if game:GetService("Players").LocalPlayer.PlayerGui.GemCollector.Frame.Timer.Text:find("00:00:00") then
+        pcall(function()
 
-            ClaimGems("Earth")
-            task.wait(1)
-            print("HOOK")
-            
-        end
+            if workspace.Machines.Earth.generatorRefreshTimer.SurfaceGui.Top.Value.Text == "READY TO COLLECT!" then
+
+                ClaimGems("Earth")
+                task.wait(1)
+                
+            end
+
+        end)
 
     end
 end)
@@ -1007,7 +1032,7 @@ createOptimisedToggle(Tab,"Auto Send Webhook", "AutoSendWebhook",
 function()
     while task.wait() do
         if _G.Settings.WebhookURL ~= "" then
-
+            pcall(function()
             local text = {
 
                 "Coins: " ..  game:GetService("Players").LocalPlayer.leaderstats.Coins.Value,
@@ -1047,7 +1072,8 @@ function()
                     })
                 }
                 )
-            task.wait(_G.Settings.WebhookWaitMin * 60) 
+                task.wait(_G.Settings.WebhookWaitMin * 60) 
+            end)
         end
     end
 end)
@@ -1082,52 +1108,55 @@ task.spawn(function()
         while task.wait(.25) do
             for i,v in pairs(GetData("pets")) do
                 if not table.find(PetsInventory,v.id) then
-                -- Send Webhook
+                    pcall(function()
+                    -- Send Webhook
 
-                local PetInfo = {
+                    local PetInfo = {
 
-                    "Name: " .. v.Name,
-                    "Type: " .. v.Modifier,
-                    "Shiny: " .. CheckShiny(v.Shiny),
-                    "Temperament: " .. v.Temperament,
-                    "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
+                        "Name: " .. v.Name,
+                        "Type: " .. v.Modifier,
+                        "Shiny: " .. CheckShiny(v.Shiny),
+                        "Temperament: " .. v.Temperament,
+                        "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
-                }
+                    }
 
-                HttpService = game:GetService("HttpService")
-                Webhook_URL = _G.Settings.WebhookURL
+                    HttpService = game:GetService("HttpService")
+                    Webhook_URL = _G.Settings.WebhookURL
 
-                local responce = request({
-                    Url = Webhook_URL,
-                        Method = "POST",
-                        Headers = {
-                        ["Content-Type"] = "application/json"
-                        },
-                        Body = HttpService:JSONEncode({
-                        ["content"] = "",
-                        ["embeds"] = {{
-                            ["title"] = "** Click Simulator **",
-                            ["type"] = "rich",
-                            ["color"] = tonumber(0xffffff),
-                            ["fields"] = {{
-                                    ["name"] = "**New Pet**",
-                                    ["value"] = table.concat(PetInfo,"\n"),
-                                    ["inline"] = true
+                    local responce = request({
+                        Url = Webhook_URL,
+                            Method = "POST",
+                            Headers = {
+                            ["Content-Type"] = "application/json"
+                            },
+                            Body = HttpService:JSONEncode({
+                            ["content"] = "",
+                            ["embeds"] = {{
+                                ["title"] = "** Click Simulator **",
+                                ["type"] = "rich",
+                                ["color"] = tonumber(0xffffff),
+                                ["fields"] = {{
+                                        ["name"] = "**New Pet**",
+                                        ["value"] = table.concat(PetInfo,"\n"),
+                                        ["inline"] = true
+                                }}
                             }}
-                        }}
+                        })
                     })
-                })
 
-                table.clear(PetsInventory)
+                    table.clear(PetsInventory)
 
-                task.wait(.1)
+                    task.wait(.1)
 
-                for i,v in pairs(GetData("pets")) do
-                    if not table.find(PetsInventory,v.id) then
-                        table.insert(PetsInventory,v.id)
-                        task.wait()
+                    for i,v in pairs(GetData("pets")) do
+                        if not table.find(PetsInventory,v.id) then
+                            table.insert(PetsInventory,v.id)
+                            task.wait()
+                        end
                     end
-                end
+
+                end)
 
                 end
             end
@@ -1137,52 +1166,55 @@ task.spawn(function()
         while task.wait(.25) do
             for i,v in pairs(GetData("pets")) do
                 if not table.find(PetsInventory,v.id) then
-                -- Send Webhook
+                    pcall(function()
+                        -- Send Webhook
 
-                local PetInfo = {
+                        local PetInfo = {
 
-                    "Name: " .. v.Name,
-                    "Type: " .. v.Modifier,
-                    "Shiny: " .. CheckShiny(v.Shiny),
-                    "Temperament: " .. v.Temperament,
-                    "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
+                            "Name: " .. v.Name,
+                            "Type: " .. v.Modifier,
+                            "Shiny: " .. CheckShiny(v.Shiny),
+                            "Temperament: " .. v.Temperament,
+                            "Multiplier: " .. PetFrame[v.id].Inner.multiplier.Text,
 
-                }
+                        }
 
-                HttpService = game:GetService("HttpService")
-                Webhook_URL = _G.Settings.WebhookURL
+                        HttpService = game:GetService("HttpService")
+                        Webhook_URL = _G.Settings.WebhookURL
 
-                local responce = request({
-                    Url = Webhook_URL,
-                        Method = "POST",
-                        Headers = {
-                        ["Content-Type"] = "application/json"
-                        },
-                        Body = HttpService:JSONEncode({
-                        ["content"] = "",
-                        ["embeds"] = {{
-                            ["title"] = "** Click Simulator **",
-                            ["type"] = "rich",
-                            ["color"] = tonumber(0xffffff),
-                            ["fields"] = {{
-                                    ["name"] = "**New Pet**",
-                                    ["value"] = table.concat(PetInfo,"\n"),
-                                    ["inline"] = true
-                            }}
-                        }}
-                    })
-                })
+                        local responce = request({
+                            Url = Webhook_URL,
+                                Method = "POST",
+                                Headers = {
+                                ["Content-Type"] = "application/json"
+                                },
+                                Body = HttpService:JSONEncode({
+                                ["content"] = "",
+                                ["embeds"] = {{
+                                    ["title"] = "** Click Simulator **",
+                                    ["type"] = "rich",
+                                    ["color"] = tonumber(0xffffff),
+                                    ["fields"] = {{
+                                            ["name"] = "**New Pet**",
+                                            ["value"] = table.concat(PetInfo,"\n"),
+                                            ["inline"] = true
+                                    }}
+                                }}
+                            })
+                        })
 
-                table.clear(PetsInventory)
+                        table.clear(PetsInventory)
 
-                task.wait(.1)
+                        task.wait(.1)
 
-                for i,v in pairs(GetData("pets")) do
-                    if not table.find(PetsInventory,v.id) then
-                        table.insert(PetsInventory,v.id)
-                        task.wait()
-                    end
-                end
+                        for i,v in pairs(GetData("pets")) do
+                            if not table.find(PetsInventory,v.id) then
+                                table.insert(PetsInventory,v.id)
+                                task.wait()
+                            end
+                        end
+
+                    end)
 
                 end
             end
@@ -1192,6 +1224,7 @@ task.spawn(function()
 
 end)
 
+--[[
 task.spawn(function()
     while task.wait(.5) do
         if _G.Settings.SelectedTeam ~= "Select a team" or _G.Settings.SelectedTeam ~= "" then
@@ -1201,6 +1234,8 @@ task.spawn(function()
         end
     end
 end)
+
+]]--
 
 Rayfield:LoadConfiguration()
 task.wait(2)
