@@ -707,19 +707,23 @@ local TeamDropdown = Tab:CreateDropdown({
     Flag = "SelectedTeam", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
     Callback = function(Option)
         _G.Settings.SelectedTeam = Option
+
         if #_G.TeamInfoPar > 0 then
             table.clear(_G.TeamInfoPar)
         end
-        local Team = readfile("Banana Hub/CS"..game.Players.LocalPlayer.Name.. "/Teams"..  tostring(_G.Settings.SelectedTeam).. ".json")
-        local a = game:GetService("HttpService"):JSONDecode(Team)
-        for i,v in pairs(a) do
-            local PetData = GetData("pets")[v]
-            local PetName = PetData.Name
-            local PetType = PetData.Modifier
-            local PetShiny = CheckShiny(Pet.Shiny)
-            local PetTemp = PetData.Temperament
-            local PetMulti = PetFrame[PetData.id].Inner.multiplier.Text
-            table.insert(_G.TeamInfoPar,"Name: "..PetName .. '\n' .. "Type: "..PetType .. '\n' .. "Shiny: "..PetShiny .. '\n' .."Temperament: "..PetTemp .. '\n' .."Multiplier: "..PetMulti .. '\n')
+
+        if isfile("Banana Hub/CS"..game.Players.LocalPlayer.Name.. "/Teams"..  tostring(_G.Settings.SelectedTeam).. ".json") then
+            local Team = readfile("Banana Hub/CS"..game.Players.LocalPlayer.Name.. "/Teams"..  tostring(_G.Settings.SelectedTeam).. ".json")
+            local a = game:GetService("HttpService"):JSONDecode(Team)
+            for i,v in pairs(a) do
+                local PetData = GetData("pets")[v]
+                local PetName = PetData.Name
+                local PetType = PetData.Modifier
+                local PetShiny = CheckShiny(Pet.Shiny)
+                local PetTemp = PetData.Temperament
+                local PetMulti = PetFrame[PetData.id].Inner.multiplier.Text
+                table.insert(_G.TeamInfoPar,"Name: "..PetName .. '\n' .. "Type: "..PetType .. '\n' .. "Shiny: "..PetShiny .. '\n' .."Temperament: "..PetTemp .. '\n' .."Multiplier: "..PetMulti .. '\n')
+            end
         end
     end,
 })
