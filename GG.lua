@@ -720,7 +720,7 @@ local Input = Tab:CreateInput({
        if not table.find(TeamsFolder, Text) then
            table.insert(TeamsFolder, Text)
            task.wait(.1)
-           TeamDropdown:UpdateOptions(TeamsFolder)
+           TeamDropdown:Refresh(TeamsFolder,"Select a Team")
            task.wait(.1)
            MakeFolderMacroName("Teams")
            task.wait(.1)
