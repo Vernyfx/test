@@ -378,10 +378,6 @@ function ClickScreen(X,Y)
     VirtualInputManager:SendMouseButtonEvent(X, Y, 0, false, game, 1)
 end
 
-function GetCurrentWorld()
-
-end
-
 -- Tables 
 
 local Eggs = {}
@@ -628,6 +624,10 @@ function()
                         end
 
                     else
+
+                        for i,v in pairs(_G.RainbowPetsTable) do
+                            print(i,v,Pet.Name,Pet.Modifier)
+                        end
 
                         task.wait(.1)
                         game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.Rainbow:InvokeServer(_G.RainbowPetsTable)
