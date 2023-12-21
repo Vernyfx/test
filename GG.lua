@@ -299,10 +299,28 @@ _G.Settings = {
     AutoClick = false,
     SelectedEggAmount = "",
     SelectedEgg = "",
+    AutoEquipBestPets = false,
+    AutoOpenSelectedEgg = false,
+    AutoDungeon = false,
+    SelectedDungeons = {},
+    SelectedEasyRoomLeave = 25,
+    SelectedMapToGoBack = "",
 
 }
 
+-- Locals
+ 
+_G.InTrial = false
+
+_G.InRaid = false
+
+_G.CanClick = true
+
+local DungeonData = game:GetService("ReplicatedStorage")._SERVER.Dungeon
+
 -- Tables
+
+local Dungeons = {"Easy"}
 
 local Worlds = {}
  
@@ -386,6 +404,18 @@ local function OpenChest(Chest,Amount)
     game:GetService("ReplicatedStorage").RemoteEvent:FireServer(ohTable1)
 end
 
+local function Teleport(Where)
+    local ohTable1 = {
+        [1] = {
+            [1] = utf8.char(3),
+            [2] = "Teleport",
+            [3] = "To",
+            [4] = Where
+        }
+    }
+    game:GetService("ReplicatedStorage").RemoteEvent:FireServer(ohTable1)
+end
+
 function GetEnemyId(Name)
     for i,v in pairs(require(game:GetService("ReplicatedStorage").Modules.Data.Enemies)) do
         if v.Name == Name then
@@ -406,14 +436,9 @@ function TweenFunc1(WhatToTween,Speed,CFrame)
     game:GetService("TweenService"):Create(WhatToTween,TweenInfo.new(tonumber(Speed)),{CFrame = CFrame}):Play()
 end
 
-
--- Locals
- 
-_G.InTrial = false
-
-_G.InRaid = false
-
-_G.CanClick = true
+function GetDungeonData(Type,Directory)
+    return DungeonData[Type]:GetAttribute(Directory)
+end
 
 -- Main
 
@@ -544,6 +569,104 @@ function()
     end
 end)
 
+local Tab = Window:CreateTab("Dungeon", 11642692687) -- Title, Image
+
+createMultiSelectDropdown(Tab,"SelectedDungeons","SelectedDungeons", "Dungeons To Do",Dungeons)
+
+local Slider = Tab:CreateSlider({
+    Name = "Room To Leave [Easy]",
+    Range = {1, 50},
+    Increment = 1,
+    Suffix = "Room",
+    CurrentValue = 3,
+    Flag = "SelectedEasyRoomLeave", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+        _G.Settings.SelectedEasyRoomLeave = Value
+    end,
+})
+
+local Dropdown = Tab:CreateDropdown({
+    Name = "Select World To Go Back To",
+    Options = Worlds,
+    CurrentOption = "",
+    Multi = false, -- If MultiSelections is allowed
+    Flag = "SelectedMapToGoBack", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Option)
+        _G.Settings.SelectedMapToGoBack = Option
+    end,
+})
+
+local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+createOptimisedToggle(Tab,"Auto Complete Dungeon", "AutoDungeon",
+function()
+    while task.wait() do
+        pcall(function()
+            local ConvertedTimer = GetDungeonData("Easy","TimeToOpen"):split("Opens in")[2]:split("s")[1]
+        end)
+        
+        if GetDungeonData("Easy","Status") == "Opened" and GetDungeonData("Easy","TimeToStart") <= 10 and LP:GetAttribute("Mode") ~= "Dungeon" then
+            if not _G.InTrial then
+
+                _G.InTrial = true
+
+                pcall(function()
+                    Teleport("Lobby")
+                    task.wait(2.5)
+                    TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.25,workspace._AREAS.Lobby.Dungeon.Easy:GetModelCFrame())
+                end)
+
+            end
+        end
+
+        if CanDoPriority("TimeTrial") and GetDungeonData("Easy","Status") == "Running" and _G.InTrial then
+
+            if GetDungeonData("Easy","Room") > GetG("SelectedEasyRoomLeave") then
+
+                local ClosestMob
+                local ClosestMobRad = math.huge
+                pcall(function()
+                    for i,v in pairs(workspace._ENEMIES.Dungeon.Easy:GetChildren()[1]:GetChildren()) do
+                        if v._STATS.CurrentHP.Value > 0 then
+                            if getStudLength(v:GetModelCFrame()) < ClosestMobRad then
+                                ClosestMob = v
+                                ClosestMobRad = getStudLength(v:GetModelCFrame())
+                            end
+                        end
+                    end
+                end)
+
+                if ClosestMob then
+                    local v = ClosestMob        
+                    local originalhealth = v._STATS.CurrentHP.Value
+
+                    pcall(function()
+                        repeat
+
+                            TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,v:GetModelCFrame() * CFrame.new(0,0,5))
+
+                            HitEnemy(v)
+
+                            task.wait()
+
+                        until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("TimeTrial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
+                    end)
+
+                end
+
+            else
+                if LP:GetAttribute("Mode") == "Dungeon" then
+                    _G.InTrial = false
+                    Teleport(GetG("SelectedMapToGoBack"))
+                    task.wait(.25)
+                end
+            end
+            
+        end
+
+    end
+end)
+
 Rayfield:LoadConfiguration()
 task.wait(2)
 _G.NowLoaded = true
@@ -560,5 +683,9 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
         game.Players.LocalPlayer:SetAttribute("Idle", false)
     end
 end)
+
+for i,v in pairs(game.Players.LocalPlayer:GetAttributes()) do
+    warn(i,v)
+end
 
 -- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
