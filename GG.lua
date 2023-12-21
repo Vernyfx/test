@@ -405,18 +405,18 @@ function()
     while task.wait() do
 
         if CanDoPriority("Farm") then
-
+            print("GG1")
             for _,Enemy in pairs(workspace._ENEMIES[GetWorldId(GetG("SelectedMap"))]:GetChildren()) do
-
+                print("GG2")
                 for i,v in pairs(GetG("SelectedEnemies")) do
-
+                    print("GG3")
                     if Enemy.Name == GetEnemyId(v) and Enemy._STATS.CurrentHP > 0 then
-
+                        print("GG4")
                         local oldName = Enemy.Name
                         local Tweened = false
 
                         repeat
-
+                            print("GG5")
                             if Enemy.Name ~= oldName .. "111" then
                                 Enemy.Name = oldName .. "111"
                             end
@@ -427,7 +427,7 @@ function()
                             end
 
                             HitEnemy(Enemy)
-                            
+
                             task.wait(.1)
 
                         until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP <= 0 or not CanDoPriority("Farm")
@@ -463,3 +463,5 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
         game.Players.LocalPlayer:SetAttribute("Idle", false)
     end
 end)
+
+--loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
