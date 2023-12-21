@@ -363,7 +363,11 @@ end
     end
 ]]
 
-
+for i,v in pairs(require(game:GetService("ReplicatedStorage").Modules.Data.Areas)) do
+    for i,v in pairs(v) do
+        warn(i,v)
+    end
+end
 
 -- Functions
 
@@ -623,7 +627,8 @@ function()
         end
 
         if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" and _G.InTrial then
-            print("THINKABOUTIT")
+            print(CanDoPriority("Trial"))
+            print(_G.InTrial)
             if GetDungeonData("Easy","Room") > GetG("SelectedEasyRoomLeave") then
                 print("ILL")
                 local ClosestMob
@@ -689,9 +694,5 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
         game.Players.LocalPlayer:SetAttribute("Idle", false)
     end
 end)
-
-for i,v in pairs(game.Players.LocalPlayer:GetAttributes()) do
-    warn(i,v)
-end
 
 -- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
