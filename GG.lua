@@ -416,20 +416,16 @@ function()
                     pcall(function()
 
                         if Enemy.Name == GetEnemyId(v) and Enemy._STATS.CurrentHP.Value > 0 then
-
+                            print("HOK")
                             local oldName = Enemy.Name
-                            local Tweened = false
 
                             repeat
-
+                                print("HOOK")
                                 if Enemy.Name ~= oldName .. "111" then
                                     Enemy.Name = oldName .. "111"
                                 end
 
-                                if not Tweened then
-                                    TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.05,v:GetModelCFrame())
-                                    Tweened = true
-                                end
+                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.05,v:GetModelCFrame())
 
                                 HitEnemy(Enemy)
 
