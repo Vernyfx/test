@@ -414,14 +414,14 @@ function()
                 for i,v in pairs(GetG("SelectedEnemies")) do
 
                     pcall(function()
-                        print(GetEnemyId(v))
-                        if Enemy.Name == GetEnemyId(v) and Enemy._STATS.CurrentHP > 0 then
-                            print("GG4")
+
+                        if Enemy.Name == GetEnemyId(v) and Enemy._STATS.CurrentHP.Value > 0 then
+
                             local oldName = Enemy.Name
                             local Tweened = false
 
                             repeat
-                                print("GG5")
+
                                 if Enemy.Name ~= oldName .. "111" then
                                     Enemy.Name = oldName .. "111"
                                 end
