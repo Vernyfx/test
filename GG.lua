@@ -178,8 +178,9 @@ local function CanDoPriority(Action)
     end
 
     local function leaveNotDoing(thing)
-        if thing == "Dungeon" then
-        elseif thing == "PickUpItems" then
+        if thing == "Farm" then
+        elseif thing == "TimeTrial" then
+        elseif thing == "Raid" then
         end
     end
 
@@ -405,15 +406,15 @@ createMultiSelectDropdown(Tab,"SelectedEnemies","SelectedEnemies", "Enemies",Ene
 createOptimisedToggle(Tab,"Auto Farm Selected Enemies", "AutoFarmSelectedEnemies",
 function()
     while task.wait() do
-        print("NICE")
-        if CanDoPriority("Farm") then
-            print("GG1")
-            for _,Enemy in pairs(workspace._ENEMIES[GetWorldId(GetG("SelectedMap"))]:GetChildren()) do
-                print("GG2")
-                for i,v in pairs(GetG("SelectedEnemies")) do
-                    print("GG3")
-                    pcall(function()
 
+        if CanDoPriority("Farm") then
+
+            for _,Enemy in pairs(workspace._ENEMIES[GetWorldId(GetG("SelectedMap"))]:GetChildren()) do
+
+                for i,v in pairs(GetG("SelectedEnemies")) do
+
+                    pcall(function()
+                        print(GetEnemyId(v))
                         if Enemy.Name == GetEnemyId(v) and Enemy._STATS.CurrentHP > 0 then
                             print("GG4")
                             local oldName = Enemy.Name
@@ -470,4 +471,4 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
     end
 end)
 
---loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
+-- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
