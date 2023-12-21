@@ -377,7 +377,9 @@ end
 
 -- Locals
  
+_G.InTrial = false
 
+_G.InRaid = false
 
 -- Main
 
@@ -403,38 +405,42 @@ createMultiSelectDropdown(Tab,"SelectedEnemies","SelectedEnemies", "Enemies",Ene
 createOptimisedToggle(Tab,"Auto Farm Selected Enemies", "AutoFarmSelectedEnemies",
 function()
     while task.wait() do
-
+        print("NICE")
         if CanDoPriority("Farm") then
             print("GG1")
             for _,Enemy in pairs(workspace._ENEMIES[GetWorldId(GetG("SelectedMap"))]:GetChildren()) do
                 print("GG2")
                 for i,v in pairs(GetG("SelectedEnemies")) do
                     print("GG3")
-                    if Enemy.Name == GetEnemyId(v) and Enemy._STATS.CurrentHP > 0 then
-                        print("GG4")
-                        local oldName = Enemy.Name
-                        local Tweened = false
+                    pcall(function()
 
-                        repeat
-                            print("GG5")
-                            if Enemy.Name ~= oldName .. "111" then
-                                Enemy.Name = oldName .. "111"
-                            end
+                        if Enemy.Name == GetEnemyId(v) and Enemy._STATS.CurrentHP > 0 then
+                            print("GG4")
+                            local oldName = Enemy.Name
+                            local Tweened = false
 
-                            if not Tweened then
-                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.05,v:GetModelCFrame())
-                                Tweened = true
-                            end
+                            repeat
+                                print("GG5")
+                                if Enemy.Name ~= oldName .. "111" then
+                                    Enemy.Name = oldName .. "111"
+                                end
 
-                            HitEnemy(Enemy)
+                                if not Tweened then
+                                    TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.05,v:GetModelCFrame())
+                                    Tweened = true
+                                end
 
-                            task.wait(.1)
+                                HitEnemy(Enemy)
 
-                        until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP <= 0 or not CanDoPriority("Farm")
-                        
-                        Enemy.Name = oldName
+                                task.wait(.1)
 
-                    end
+                            until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP <= 0 or not CanDoPriority("Farm")
+                            
+                            Enemy.Name = oldName
+
+                        end
+
+                    end)
 
                 end
 
