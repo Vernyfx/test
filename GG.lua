@@ -621,15 +621,18 @@ function()
         end
 
         if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" and _G.InTrial then
-
+            print("THINKABOUTIT")
             if GetDungeonData("Easy","Room") > GetG("SelectedEasyRoomLeave") then
-
+                print("ILL")
                 local ClosestMob
                 local ClosestMobRad = math.huge
                 --pcall(function()
                     for i,v in pairs(workspace._ENEMIES.Dungeon.Easy:GetChildren()[1]:GetChildren()) do
+                        print("GG")
                         if v._STATS.CurrentHP.Value > 0 then
+                            print("CALM")
                             if getStudLength(v:GetModelCFrame()) < ClosestMobRad then
+                                print("NO")
                                 ClosestMob = v
                                 ClosestMobRad = getStudLength(v:GetModelCFrame())
                             end
@@ -638,8 +641,8 @@ function()
                 --end)
 
                 if ClosestMob then
+                    print("OK")
                     local v = ClosestMob        
-                    local originalhealth = v._STATS.CurrentHP.Value
 
                     --pcall(function()
                         repeat
