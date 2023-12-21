@@ -431,13 +431,12 @@ function()
 
                             until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Farm")
                             
-                            print("HH")
-
-                            if Enemy.Name == GetEnemyId(v) .. "111" then
-                                repeat
-                                    Enemy.Name = GetEnemyId(v)
+                            for a,b in pairs(workspace._ENEMIES[GetWorldId(GetG("SelectedMap"))]:GetChildren()) do
+                                if b.Name:find("111") then
+                                    local gg = b.Name:split("111")
+                                    b.Name = gg[1]
                                     task.wait()
-                                until not GetG("AutoFarmSelectedEnemies") or Enemy.Name == GetEnemyId(v) or not CanDoPriority("Farm")
+                                end
                             end
 
                         end
