@@ -619,7 +619,7 @@ function()
             end
         end
 
-        if CanDoPriority("TimeTrial") and GetDungeonData("Easy","Status") == "Running" and _G.InTrial then
+        if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" and _G.InTrial then
 
             if GetDungeonData("Easy","Room") > GetG("SelectedEasyRoomLeave") then
 
@@ -649,7 +649,7 @@ function()
 
                             task.wait()
 
-                        until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("TimeTrial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
+                        until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Trial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
                     end)
 
                 end
