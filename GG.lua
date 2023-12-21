@@ -295,6 +295,10 @@ _G.Settings = {
     -- Main
     SelectedMap = "",
     AutoFarmSelectedEnemies = "",
+    SelectedEnemies = {},
+    AutoClick = false,
+    SelectedEggAmount = "",
+    SelectedEgg = "",
 
 }
 
@@ -327,6 +331,20 @@ for i,v in pairs(require(game:GetService("ReplicatedStorage").Modules.Data.Raid)
     table.insert(Raids,i)
 end
 
+local Eggs = {}
+
+for i,v in pairs(require(game:GetService("ReplicatedStorage").Modules.Data.Eggs)) do
+    table.insert(Eggs,i)
+end
+
+--[[ Module template
+    for i,v in pairs(require(game:GetService("ReplicatedStorage").Modules.Data.Eggs)) do
+        -- for i,v in pairs(v) do
+            warn(i,v)
+        --end
+    end
+]]
+
 -- Functions
 
 local function Click()
@@ -352,6 +370,19 @@ local function HitEnemy(Enemy)
         }
     }
 
+    game:GetService("ReplicatedStorage").RemoteEvent:FireServer(ohTable1)
+end
+
+local function OpenChest(Chest,Amount)
+    local ohTable1 = {
+        [1] = {
+            [1] = utf8.char(3),
+            [2] = "Pets",
+            [3] = "Open",
+            [4] = Chest,
+            [5] = Amount
+        }
+    }
     game:GetService("ReplicatedStorage").RemoteEvent:FireServer(ohTable1)
 end
 
@@ -381,6 +412,8 @@ end
 _G.InTrial = false
 
 _G.InRaid = false
+
+_G.CanClick = true
 
 -- Main
 
@@ -429,8 +462,12 @@ function()
 
                                 task.wait()
 
+                                _G.CanClick = false
+
                             until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Farm")
                             
+                            _G.CanClick = true
+
                             for a,b in pairs(workspace._ENEMIES[GetWorldId(GetG("SelectedMap"))]:GetChildren()) do
                                 if b.Name:find("111") then
                                     local gg = b.Name:split("111")
@@ -452,7 +489,64 @@ function()
     end
 end)
 
+local Section = Tab:CreateSection("Misc",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
+createOptimisedToggle(Tab,"Auto Click", "AutoClick",
+function()
+    while task.wait() do
+
+        if _G.CanClick then
+
+            pcall(function()
+                Click()
+            end)
+
+        end
+
+        task.wait(.05)
+
+    end
+end)
+
+local Tab = Window:CreateTab("Eggs", 11642692687) -- Title, Image
+
+local Section = Tab:CreateSection("Select",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+local Dropdown = Tab:CreateDropdown({
+    Name = "Select Egg",
+    Options = Eggs,
+    CurrentOption = "",
+    Multi = false, -- If MultiSelections is allowed
+    Flag = "SelectedEgg", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Option)
+        _G.Settings.SelectedEgg = Option
+    end,
+})
+
+local Dropdown = Tab:CreateDropdown({
+    Name = "Select Amount",
+    Options = {"One","Three"},
+    CurrentOption = "",
+    Multi = false, -- If MultiSelections is allowed
+    Flag = "SelectedEggAmount", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Option)
+        _G.Settings.SelectedEggAmount = Option
+    end,
+})
+
+local Section = Tab:CreateSection("Auto",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
+createOptimisedToggle(Tab,"Auto Open Selected Egg (Must Be Close To Egg)", "AutoOpenSelectedEgg",
+function()
+    while task.wait() do
+
+        pcall(function()
+            OpenChest(GetG("SelectedEgg"),GetG("SelectedEggAmount"))
+            task.wait(.25)
+        end)
+
+    end
+end)
 
 Rayfield:LoadConfiguration()
 task.wait(2)
