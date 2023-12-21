@@ -625,6 +625,8 @@ function()
                     TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.25,workspace._AREAS.Lobby.Dungeon.Easy:GetModelCFrame())
                 --end)
 
+                break
+
             end
         end
 
