@@ -634,7 +634,7 @@ function()
                 local ClosestMob
                 local ClosestMobRad = math.huge
                 --pcall(function()
-                    for i,v in pairs(workspace._ENEMIES.Dungeon.Easy:GetChildren()[1]:GetChildren()) do
+                    for i,v in pairs(workspace._ENEMIES.Dungeon.Easy[GetDungeonData("Easy","Room")]:GetChildren()) do
                         print("GG")
                         if v._STATS.CurrentHP.Value > 0 then
                             print("CALM")
