@@ -416,16 +416,14 @@ function()
                     pcall(function()
 
                         if Enemy.Name == GetEnemyId(v) and Enemy._STATS.CurrentHP.Value > 0 then
-                            print("HOK")
-                            local oldName = Enemy.Name
 
                             repeat
-                                print("HOOK")
-                                if Enemy.Name ~= oldName .. "111" then
-                                    Enemy.Name = oldName .. "111"
+
+                                if Enemy.Name ~= GetEnemyId(v) .. "111" then
+                                    Enemy.Name = GetEnemyId(v) .. "111"
                                 end
 
-                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.05,v:GetModelCFrame())
+                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.05,Enemy:GetModelCFrame())
 
                                 HitEnemy(Enemy)
 
@@ -433,7 +431,7 @@ function()
 
                             until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP <= 0 or not CanDoPriority("Farm")
                             
-                            Enemy.Name = oldName
+                            Enemy.Name = GetEnemyId(v)
 
                         end
 
