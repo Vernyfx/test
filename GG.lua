@@ -495,13 +495,9 @@ createOptimisedToggle(Tab,"Auto Click", "AutoClick",
 function()
     while task.wait() do
 
-        if _G.CanClick then
-
-            pcall(function()
-                Click()
-            end)
-
-        end
+        pcall(function()
+             Click()
+        end)
 
         task.wait(.05)
 
