@@ -612,7 +612,7 @@ function()
             local ConvertedTimer = GetDungeonData("Easy","TimeToOpen"):split("Opens in")[2]:split("s")[1]
         end)
         
-        if GetDungeonData("Easy","Status") == "Opened" and GetDungeonData("Easy","TimeToStart") <= 10 and LP:GetAttribute("Mode") ~= "Dungeon" then
+        if GetDungeonData("Easy","Status") == "Opened" and GetDungeonData("Easy","TimeToStart") <= 10 and not game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
             if not _G.InTrial then
 
                 _G.InTrial = true
@@ -626,7 +626,7 @@ function()
             end
         end
 
-        if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" and LP:GetAttribute("Mode") == "Dungeon" then
+        if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" and game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
             print(CanDoPriority("Trial"))
             print(_G.InTrial)
             if GetDungeonData("Easy","Room") > GetG("SelectedEasyRoomLeave") then
@@ -666,7 +666,7 @@ function()
                 end
 
             else
-                if LP:GetAttribute("Mode") == "Dungeon" then
+                if game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
                     _G.InTrial = false
                     Teleport(GetG("SelectedMapToGoBack"))
                     task.wait(.25)
@@ -677,6 +677,10 @@ function()
 
     end
 end)
+
+for i,v in pairs(game:GetService("Players").LocalPlayer.Gamepasses:GetAttributes()) do
+    v.Value = true
+end
 
 Rayfield:LoadConfiguration()
 task.wait(2)
