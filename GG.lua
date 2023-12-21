@@ -577,6 +577,8 @@ end)
 
 local Tab = Window:CreateTab("Dungeon", 11642692687) -- Title, Image
 
+local Section = Tab:CreateSection("Settings",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
+
 createMultiSelectDropdown(Tab,"SelectedDungeons","SelectedDungeons", "Dungeons To Do",Dungeons)
 
 local Slider = Tab:CreateSlider({
@@ -627,8 +629,7 @@ function()
         end
 
         if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" and game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
-            print(CanDoPriority("Trial"))
-            print(_G.InTrial)
+            print(GetDungeonData("Easy","Status"))
             if GetDungeonData("Easy","Room") > GetG("SelectedEasyRoomLeave") then
                 print("ILL")
                 local ClosestMob
@@ -677,10 +678,6 @@ function()
 
     end
 end)
-
-for i,v in pairs(game:GetService("Players").LocalPlayer.Gamepasses:GetAttributes()) do
-    v.Value = true
-end
 
 Rayfield:LoadConfiguration()
 task.wait(2)
