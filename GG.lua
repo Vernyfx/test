@@ -628,7 +628,7 @@ function()
             end
         end
 
-        if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" and game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
+        if CanDoPriority("Trial") and game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
             print(GetDungeonData("Easy","Status"))
             if GetDungeonData("Easy","Room") > GetG("SelectedEasyRoomLeave") then
                 print("ILL")
