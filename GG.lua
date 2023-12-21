@@ -419,15 +419,13 @@ function()
 
                             repeat
 
-                                if Enemy.Name ~= GetEnemyId(v) .. "111" then
-                                    Enemy.Name = GetEnemyId(v) .. "111"
-                                end
+                                Enemy.Name = GetEnemyId(v) .. "111"
 
                                 TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.5,Enemy:GetModelCFrame())
 
                                 HitEnemy(Enemy)
 
-                                task.wait(.1)
+                                task.wait()
 
                             until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP <= 0 or not CanDoPriority("Farm")
                             
