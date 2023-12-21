@@ -423,7 +423,7 @@ function()
                                     Enemy.Name = GetEnemyId(v) .. "111"
                                 end
 
-                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.05,Enemy:GetModelCFrame())
+                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.5,Enemy:GetModelCFrame())
 
                                 HitEnemy(Enemy)
 
