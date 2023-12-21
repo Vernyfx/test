@@ -626,7 +626,7 @@ function()
             end
         end
 
-        if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" and _G.InTrial then
+        if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" and LP:GetAttribute("Mode") == "Dungeon" then
             print(CanDoPriority("Trial"))
             print(_G.InTrial)
             if GetDungeonData("Easy","Room") > GetG("SelectedEasyRoomLeave") then
