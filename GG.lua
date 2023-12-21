@@ -423,7 +423,7 @@ function()
                                     Enemy.Name = GetEnemyId(v) .. "111"
                                 end
 
-                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.5,Enemy:GetModelCFrame() * CFrame.new(0,0,5))
+                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,Enemy:GetModelCFrame() * CFrame.new(0,0,5))
 
                                 HitEnemy(Enemy)
 
@@ -432,6 +432,8 @@ function()
                             until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Farm")
                             
                             Enemy.Name = GetEnemyId(v)
+
+                            break
 
                         end
 
