@@ -578,7 +578,7 @@ local Slider = Tab:CreateSlider({
     Range = {1, 50},
     Increment = 1,
     Suffix = "Room",
-    CurrentValue = 3,
+    CurrentValue = 25,
     Flag = "SelectedEasyRoomLeave", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
     Callback = function(Value)
         _G.Settings.SelectedEasyRoomLeave = Value
@@ -601,6 +601,7 @@ local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if
 createOptimisedToggle(Tab,"Auto Complete Dungeon", "AutoDungeon",
 function()
     while task.wait() do
+    
         pcall(function()
             local ConvertedTimer = GetDungeonData("Easy","TimeToOpen"):split("Opens in")[2]:split("s")[1]
         end)
@@ -610,11 +611,11 @@ function()
 
                 _G.InTrial = true
 
-                pcall(function()
+                --pcall(function()
                     Teleport("Lobby")
                     task.wait(2.5)
                     TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.25,workspace._AREAS.Lobby.Dungeon.Easy:GetModelCFrame())
-                end)
+                --end)
 
             end
         end
@@ -625,7 +626,7 @@ function()
 
                 local ClosestMob
                 local ClosestMobRad = math.huge
-                pcall(function()
+                --pcall(function()
                     for i,v in pairs(workspace._ENEMIES.Dungeon.Easy:GetChildren()[1]:GetChildren()) do
                         if v._STATS.CurrentHP.Value > 0 then
                             if getStudLength(v:GetModelCFrame()) < ClosestMobRad then
@@ -634,13 +635,13 @@ function()
                             end
                         end
                     end
-                end)
+                --end)
 
                 if ClosestMob then
                     local v = ClosestMob        
                     local originalhealth = v._STATS.CurrentHP.Value
 
-                    pcall(function()
+                    --pcall(function()
                         repeat
 
                             TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,v:GetModelCFrame() * CFrame.new(0,0,5))
@@ -650,7 +651,7 @@ function()
                             task.wait()
 
                         until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Trial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
-                    end)
+                    --end)
 
                 end
 
