@@ -527,7 +527,7 @@ function()
     while task.wait() do
 
         pcall(function()
-             Click()
+            Click()
         end)
 
         task.wait(.05)
@@ -630,7 +630,7 @@ function()
 
         if CanDoPriority("Trial") then
 
-            if GetDungeonData("Easy","Room") > GetG("SelectedEasyRoomLeave") then
+            if (GetDungeonData("Easy","Room") > tonumber(GetG("SelectedEasyRoomLeave"))) or (tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text) >= tonumber(GetG("SelectedEasyRoomLeave"))) then
                 print("ILL")
                 local ClosestMob
                 local ClosestMobRad = math.huge
