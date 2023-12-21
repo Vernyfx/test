@@ -631,7 +631,7 @@ function()
         end
 
         if CanDoPriority("Trial") then
-
+            pcall(function()
             if (GetDungeonData("Easy","Room") > tonumber(GetG("SelectedEasyRoomLeave"))) or (tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text) >= tonumber(GetG("SelectedEasyRoomLeave"))) then
                 print("ILL")
                 local ClosestMob
@@ -675,6 +675,7 @@ function()
                     task.wait(.25)
                 end
             end
+        end)
             
         end
 
