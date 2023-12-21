@@ -432,15 +432,13 @@ function()
                             until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Farm")
                             
                             print("HH")
-                            
+
                             if Enemy.Name == GetEnemyId(v) .. "111" then
                                 repeat
                                     Enemy.Name = GetEnemyId(v)
                                     task.wait()
-                                until not GetG("AutoFarmSelectedEnemies") or Enemy._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Farm")
+                                until not GetG("AutoFarmSelectedEnemies") or Enemy.Name == GetEnemyId(v) or not CanDoPriority("Farm")
                             end
-
-                            break
 
                         end
 
