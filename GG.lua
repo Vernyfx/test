@@ -632,16 +632,12 @@ function()
 
         if CanDoPriority("Trial") then
             --if (GetDungeonData("Easy","Room") > tonumber(GetG("SelectedEasyRoomLeave"))) or (tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text) >= tonumber(GetG("SelectedEasyRoomLeave"))) then
-                print("ILL")
                 local ClosestMob
                 local ClosestMobRad = math.huge
                 pcall(function()
                     for i,v in pairs(workspace._ENEMIES.Dungeon.Easy[GetDungeonData("Easy","Room")]:GetChildren()) do
-                        print("GG")
                         if v._STATS.CurrentHP.Value > 0 then
-                            print("CALM")
                             if getStudLength(v:GetModelCFrame()) < ClosestMobRad then
-                                print("NO")
                                 ClosestMob = v
                                 ClosestMobRad = getStudLength(v:GetModelCFrame())
                             end
@@ -650,7 +646,6 @@ function()
                 end)
 
                 if ClosestMob then
-                    print("OK")
                     local v = ClosestMob        
 
                     pcall(function()
@@ -663,6 +658,7 @@ function()
                             task.wait()
 
                         until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Trial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
+                        task.wait(.5)
                     end)
 
                 end
