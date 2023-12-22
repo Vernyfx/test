@@ -623,7 +623,7 @@ Tab:CreateInput({
         Text = tostring(Text)
         _G.Settings.SelectedEasyPosition = Text
         SaveTableRequest("SelectedEasyPosition","Update",_G.Settings.SelectedEasyPosition)
-        RoomLeaveEasy:Set("Set Position: ".._G.Settings.SelectedEasyPosition)
+        PositionDungeon:Set("Set Position: ".._G.Settings.SelectedEasyPosition)
     end
 })
 
