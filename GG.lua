@@ -624,15 +624,14 @@ function()
                     task.wait(2.5)
                     TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.25,workspace._AREAS.Lobby.Dungeon.Easy:GetModelCFrame())
                 --end)
-
+                    
                 break
 
             end
         end
 
         if CanDoPriority("Trial") then
-            pcall(function()
-            if (GetDungeonData("Easy","Room") > tonumber(GetG("SelectedEasyRoomLeave"))) or (tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text) >= tonumber(GetG("SelectedEasyRoomLeave"))) then
+            --if (GetDungeonData("Easy","Room") > tonumber(GetG("SelectedEasyRoomLeave"))) or (tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text) >= tonumber(GetG("SelectedEasyRoomLeave"))) then
                 print("ILL")
                 local ClosestMob
                 local ClosestMobRad = math.huge
@@ -668,14 +667,13 @@ function()
 
                 end
 
-            else
-                if game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
-                    _G.InTrial = false
-                    Teleport(GetG("SelectedMapToGoBack"))
-                    task.wait(.25)
-                end
-            end
-        end)
+            --else
+                --if game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
+                    --_G.InTrial = false
+                    --Teleport(GetG("SelectedMapToGoBack"))
+                    --task.wait(.25)
+                --end
+            --end
             
         end
 
