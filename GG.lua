@@ -305,7 +305,7 @@ _G.Settings = {
     SelectedDungeons = {},
     SelectedEasyRoomLeave = 25,
     SelectedMapToGoBack = "",
-
+    SelectedEasyPosition = "0,0,0"
 }
 
 -- Locals
