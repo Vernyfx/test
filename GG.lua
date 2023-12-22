@@ -657,6 +657,7 @@ function()
                         end
                     else
                         --pcall(function()
+                            print("NIGGer")
                             task.wait(1)
                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room"))].Door:GetModelCFrame() * CFrame.new(7.5,0,0)
                             task.wait(2)
@@ -681,6 +682,7 @@ function()
                         if not workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) then
 
                             --pcall(function()
+                                print("PK")
                                 task.wait(1)
                                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room"))].Door:GetModelCFrame() * CFrame.new(7.5,0,0)
                                 task.wait(2)
@@ -693,7 +695,7 @@ function()
                 end
 
                 if not workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) then
-
+                    print("GG")
                     --pcall(function()
                         task.wait(1)
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room"))].Door:GetModelCFrame() * CFrame.new(7.5,0,0)
