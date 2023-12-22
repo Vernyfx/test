@@ -487,7 +487,7 @@ function()
                                     Enemy.Name = GetEnemyId(v) .. "111"
                                 end
 
-                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,Enemy:GetModelCFrame() * CFrame.new(0,0,5))
+                                TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0,Enemy:GetModelCFrame() * CFrame.new(0,0,5))
 
                                 HitEnemy(Enemy)
 
@@ -624,7 +624,7 @@ function()
                 --pcall(function()
                     Teleport("Lobby")
                     task.wait(2.5)
-                    TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.25,workspace._AREAS.Lobby.Dungeon.Easy:GetModelCFrame())
+                    TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,workspace._AREAS.Lobby.Dungeon.Easy:GetModelCFrame())
                 --end)
                     
                 break
@@ -653,7 +653,7 @@ function()
                     pcall(function()
                         repeat
 
-                            TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,v:GetModelCFrame() * CFrame.new(0,0,5))
+                            TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0,v:GetModelCFrame() * CFrame.new(0,0,5))
 
                             HitEnemy(v)
 
