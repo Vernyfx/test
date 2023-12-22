@@ -611,6 +611,32 @@ local Dropdown = Tab:CreateDropdown({
     end,
 })
 
+local PositionDungeon = Tab:CreateLabel("Set Position: ".._G.Settings.SelectedEasyPosition)
+
+Tab:CreateInput({
+    Name = "Set Position To Go Back To",
+    PlaceholderText = "0,0,0",
+    NumbersOnly = false, -- If the user can only type numbers.
+    OnEnter = true, -- Will callback only if the user pressed ENTER while being focused.
+    RemoveTextAfterFocusLost = true,
+    Callback = function(Text)
+        Text = tostring(Text)
+        _G.Settings.SelectedEasyPosition = Text
+        SaveTableRequest("SelectedEasyPosition","Update",_G.Settings.SelectedEasyPosition)
+        RoomLeaveEasy:Set("Set Position: ".._G.Settings.SelectedEasyPosition)
+    end
+})
+
+
+local Button = Tab:CreateButton({
+    Name = "Copy Current Position",
+    Interact = 'Copy',
+    Callback = function()
+        local MYCFrame1 = {math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.X + 0.5),math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Y + 0.5),math.floor(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Z + 0.5)}
+        setclipboard(tostring(table.concat(MYCFrame1,", ")))
+    end,
+})
+
 local Section = Tab:CreateSection("Main",true) -- The 2nd argument is to tell if its only a Title and doesnt contain elements
 
 createOptimisedToggle(Tab,"Auto Complete Dungeon", "AutoDungeon",
@@ -657,7 +683,6 @@ function()
                         end
                     else
                         --pcall(function()
-                            print("NIGGer")
                             task.wait(1)
                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room") - 1)].Door:GetModelCFrame() * CFrame.new(-7.5,0,0)
                             task.wait(2)
@@ -682,7 +707,6 @@ function()
                         if not workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) then
 
                             --pcall(function()
-                                print("PK")
                                 task.wait(1)
                                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room") - 1)].Door:GetModelCFrame() * CFrame.new(-7.5,0,0)
                                 task.wait(2)
@@ -695,8 +719,10 @@ function()
                 end
 
                 if not workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) then
-                    print("GG")
+
                     --pcall(function()
+                        print(GetG("SelectedEasyRoomLeave"))
+                        print(GetDungeonData("Easy","Room"))
                         task.wait(1)
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room") - 1)].Door:GetModelCFrame() * CFrame.new(-7.5,0,0)
                         task.wait(2)
