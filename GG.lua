@@ -644,7 +644,7 @@ function()
             --if (GetDungeonData("Easy","Room") > tonumber(GetG("SelectedEasyRoomLeave"))) or (tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text) >= tonumber(GetG("SelectedEasyRoomLeave"))) then
                 local ClosestMob
                 local ClosestMobRad = math.huge
-                print("BBRUH")
+
                 pcall(function()
                     if workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) then
                         for i,v in pairs(workspace._ENEMIES.Dungeon.Easy[DungeonData.Easy:GetAttribute("Room")]:GetChildren()) do
@@ -674,6 +674,8 @@ function()
                         
                         pcall(function()
                             DungeonData.Easy:GetAttributeChangedSignal("Room"):Connect(function()
+                                task.wait(.5)
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[GetDungeonData("Easy","Room")].Door:GetModelCFrame() * CFrame.new(7.5,0,0)
                                 task.wait(2.5)
                             end)
                         end)
@@ -711,5 +713,6 @@ game.Players.LocalPlayer.AttributeChanged:Connect(function(n)
         game.Players.LocalPlayer:SetAttribute("Idle", false)
     end
 end)
+
 
 -- loadstring(game:HttpGet('https://raw.githubusercontent.com/Vernyfx/test/main/GG.lua'))()
