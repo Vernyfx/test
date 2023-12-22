@@ -645,16 +645,18 @@ function()
                 local ClosestMob
                 local ClosestMobRad = math.huge
                 print("BBRUH")
-                --pcall(function()
-                    for i,v in pairs(workspace._ENEMIES.Dungeon.Easy[DungeonData.Easy:GetAttribute("Room")]:GetChildren()) do
-                        if v._STATS.CurrentHP.Value > 0 then
-                            if getStudLength(v:GetModelCFrame()) < ClosestMobRad then
-                                ClosestMob = v
-                                ClosestMobRad = getStudLength(v:GetModelCFrame())
+                pcall(function()
+                    if workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) then
+                        for i,v in pairs(workspace._ENEMIES.Dungeon.Easy[DungeonData.Easy:GetAttribute("Room")]:GetChildren()) do
+                            if v._STATS.CurrentHP.Value > 0 then
+                                if getStudLength(v:GetModelCFrame()) < ClosestMobRad then
+                                    ClosestMob = v
+                                    ClosestMobRad = getStudLength(v:GetModelCFrame())
+                                end
                             end
                         end
                     end
-                --end)
+                end)
 
                 if ClosestMob then
                     local v = ClosestMob        
@@ -670,9 +672,11 @@ function()
 
                         until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Trial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
                         
-                        if DungeonData.Easy:GetAttributeChangedSignal("Room") then
-                            task.wait(2.5)
-                        end
+                        pcall(function()
+                            DungeonData.Easy:GetAttributeChangedSignal("Room"):Connect(function()
+                                task.wait(2.5)
+                            end)
+                        end)
 
                     end)
 
