@@ -678,7 +678,7 @@ function()
                     else
                         --pcall(function()
                             task.wait(1)
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room") - 1)].Door:GetModelCFrame() * CFrame.new(-7.5,0,0)
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text].Door:GetModelCFrame() * CFrame.new(-7.5,0,0)
                             task.wait(2)
                         --end)
                     end
@@ -702,7 +702,7 @@ function()
 
                             --pcall(function()
                                 task.wait(1)
-                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room") - 1)].Door:GetModelCFrame() * CFrame.new(-7.5,0,0)
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text].Door:GetModelCFrame() * CFrame.new(-7.5,0,0)
                                 task.wait(2)
                             --end)
 
@@ -718,7 +718,7 @@ function()
                         print(GetG("SelectedEasyRoomLeave"))
                         print(GetDungeonData("Easy","Room"))
                         task.wait(1)
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room") - 1)].Door:GetModelCFrame() * CFrame.new(-7.5,0,0)
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text].Door:GetModelCFrame() * CFrame.new(-7.5,0,0)
                         task.wait(2)
                     --end)
 
