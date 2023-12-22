@@ -641,7 +641,7 @@ function()
             local ConvertedTimer = GetDungeonData("Easy","TimeToOpen"):split("Opens in")[2]:split("s")[1]
         end)
         
-        if (GetDungeonData("Easy","Status") == "Opened" and GetDungeonData("Easy","TimeToStart") <= 20) and GetDungeonData("Easy","Mode") ~= "Dungeon" then
+        if (GetDungeonData("Easy","Status") == "Opened" and GetDungeonData("Easy","TimeToStart") <= 20) and not LP:GetAttribute("Mode") then
             if not _G.InTrial then
 
                 _G.InTrial = true
@@ -712,7 +712,7 @@ function()
 
                 end
 
-                if not workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) then
+                if not workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) and LP:GetAttribute("Mode") == "Dungeon" then
 
                     --pcall(function()
                         print(GetG("SelectedEasyRoomLeave"))
