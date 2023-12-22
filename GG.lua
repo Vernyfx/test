@@ -730,13 +730,14 @@ function()
 
                 end
 
-            --else
-                --if game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
-                    --_G.InTrial = false
-                    --Teleport(GetG("SelectedMapToGoBack"))
-                    --task.wait(.25)
-                --end
-            --end
+                if game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible and GetDungeonData("Easy","Room") <= tonumber(GetG("SelectedEasyRoomLeave")) then
+                    print(GetG("SelectedEasyRoomLeave"))
+                    print(GetDungeonData("Easy","Room"))
+                    _G.InTrial = false
+                    Teleport(GetG("SelectedMapToGoBack"))
+                    task.wait(2.5)
+                    LP.Character.HumanoidRootPart.CFrame = GetG("SelectedEasyPosition")
+                end
             
         end
 
