@@ -656,11 +656,11 @@ function()
                             end
                         end
                     else
-                        pcall(function()
+                        --pcall(function()
                             task.wait(1)
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[GetDungeonData("Easy","Room")].Door:GetModelCFrame() * CFrame.new(7.5,0,0)
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room"))].Door:GetModelCFrame() * CFrame.new(7.5,0,0)
                             task.wait(2)
-                        end)
+                        --end)
                     end
                 end)
 
@@ -677,6 +677,16 @@ function()
                             task.wait(.1)
 
                         until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Trial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
+                        
+                        if not workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) then
+
+                            --pcall(function()
+                                task.wait(1)
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room"))].Door:GetModelCFrame() * CFrame.new(7.5,0,0)
+                                task.wait(2)
+                            --end)
+
+                        end
 
                     end)
 
