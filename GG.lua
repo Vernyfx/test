@@ -692,6 +692,16 @@ function()
 
                 end
 
+                if not workspace._AREAS["Dungeon: Easy"].Map:FindFirstChild(DungeonData.Easy:GetAttribute("Room")) then
+
+                    --pcall(function()
+                        task.wait(1)
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace._AREAS["Dungeon: Easy"].Map[tostring(DungeonData.Easy:GetAttribute("Room"))].Door:GetModelCFrame() * CFrame.new(7.5,0,0)
+                        task.wait(2)
+                    --end)
+
+                end
+
             --else
                 --if game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
                     --_G.InTrial = false
