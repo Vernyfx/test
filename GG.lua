@@ -616,7 +616,7 @@ function()
             local ConvertedTimer = GetDungeonData("Easy","TimeToOpen"):split("Opens in")[2]:split("s")[1]
         end)
         
-        if (GetDungeonData("Easy","Status") == "Opened" and GetDungeonData("Easy","TimeToStart") <= 20) and GetDungeonData("Easy","Mode") ~= "Dungeon" or not game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
+        if (GetDungeonData("Easy","Status") == "Opened" and GetDungeonData("Easy","TimeToStart") <= 20) and GetDungeonData("Easy","Mode") ~= "Dungeon" then
             if not _G.InTrial then
 
                 _G.InTrial = true
@@ -627,6 +627,10 @@ function()
                     task.wait(2.5)
                     TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,workspace._AREAS.Lobby.Dungeon.Easy:GetModelCFrame())
                 end)
+                
+                repeat
+                    task.wait()
+                until GetDungeonData("Easy","Status") == "Running" or not GetG("AutoDungeon")
 
             end
         end
