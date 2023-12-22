@@ -363,12 +363,6 @@ end
     end
 ]]
 
-for i,v in pairs(require(game:GetService("ReplicatedStorage").Modules.Data.Areas)) do
-    for i,v in pairs(v) do
-        warn(i,v)
-    end
-end
-
 -- Functions
 
 local function Click()
@@ -730,13 +724,13 @@ function()
 
                 end
 
-                if game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible and GetDungeonData("Easy","Room") <= tonumber(GetG("SelectedEasyRoomLeave")) then
+                if game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible and GetDungeonData("Easy","Room") >= tonumber(GetG("SelectedEasyRoomLeave")) then
                     print(GetG("SelectedEasyRoomLeave"))
                     print(GetDungeonData("Easy","Room"))
                     _G.InTrial = false
                     Teleport(GetG("SelectedMapToGoBack"))
                     task.wait(2.5)
-                    LP.Character.HumanoidRootPart.CFrame = GetG("SelectedEasyPosition")
+                    LP.Character.HumanoidRootPart.CFrame = CFrame.new(GetG("SelectedEasyPosition"))
                 end
             
         end
