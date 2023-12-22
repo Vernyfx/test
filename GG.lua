@@ -635,7 +635,7 @@ function()
                 print("ILL")
                 local ClosestMob
                 local ClosestMobRad = math.huge
-                --pcall(function()
+                pcall(function()
                     for i,v in pairs(workspace._ENEMIES.Dungeon.Easy[GetDungeonData("Easy","Room")]:GetChildren()) do
                         print("GG")
                         if v._STATS.CurrentHP.Value > 0 then
@@ -647,13 +647,13 @@ function()
                             end
                         end
                     end
-                --end)
+                end)
 
                 if ClosestMob then
                     print("OK")
                     local v = ClosestMob        
 
-                    --pcall(function()
+                    pcall(function()
                         repeat
 
                             TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,v:GetModelCFrame() * CFrame.new(0,0,5))
@@ -663,7 +663,7 @@ function()
                             task.wait()
 
                         until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Trial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
-                    --end)
+                    end)
 
                 end
 
