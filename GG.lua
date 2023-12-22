@@ -627,10 +627,6 @@ function()
                     task.wait(2.5)
                     TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,workspace._AREAS.Lobby.Dungeon.Easy:GetModelCFrame())
                 end)
-                
-                repeat
-                    task.wait()
-                until GetDungeonData("Easy","Status") == "Running" or not GetG("AutoDungeon")
 
             end
         end
