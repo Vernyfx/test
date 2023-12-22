@@ -661,10 +661,12 @@ function()
 
                             HitEnemy(v)
 
-                            task.wait()
+                            task.wait(.1)
 
                         until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Trial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
-                        task.wait(.5)
+                        
+                        task.wait(1)
+
                     end)
 
                 end
