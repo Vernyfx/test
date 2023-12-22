@@ -595,6 +595,22 @@ local Slider = Tab:CreateSlider({
     end,
 })
 
+local RoomLeaveEasy = Tab:CreateLabel("Room To Leave [Easy]: ".._G.Settings.SelectedEasyRoomLeave)
+
+Tab:CreateInput({
+    Name = "Enter your Webhook URL",
+    PlaceholderText = "link",
+    NumbersOnly = false, -- If the user can only type numbers.
+    OnEnter = true, -- Will callback only if the user pressed ENTER while being focused.
+    RemoveTextAfterFocusLost = true,
+    Callback = function(Text)
+        Text = tostring(Text)
+        _G.Settings.SelectedEasyRoomLeave = Text
+        SaveTableRequest("SelectedEasyRoomLeave","Update",_G.Settings.SelectedEasyRoomLeave)
+        RoomLeaveEasy:Set("Room To Leave [Easy]: ".._G.Settings.SelectedEasyRoomLeave)
+    end
+})
+
 local Dropdown = Tab:CreateDropdown({
     Name = "Select World To Go Back To",
     Options = Worlds,
