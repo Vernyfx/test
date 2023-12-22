@@ -665,7 +665,9 @@ function()
 
                         until not v or v._STATS.CurrentHP.Value <= 0 or not CanDoPriority("Trial") or not GetG("AutoDungeon") or GetDungeonData("Easy","Room") <= GetG("SelectedEasyRoomLeave")
                         
-                        task.wait(1)
+                        if DungeonData.Easy:GetAttributeChangedSignal("Room") then
+                            task.wait(2.5)
+                        end
 
                     end)
 
