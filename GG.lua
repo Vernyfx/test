@@ -630,7 +630,7 @@ function()
             end
         end
 
-        if CanDoPriority("Trial") then
+        if CanDoPriority("Trial") and GetDungeonData("Easy","Status") == "Running" then
             --if (GetDungeonData("Easy","Room") > tonumber(GetG("SelectedEasyRoomLeave"))) or (tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text) >= tonumber(GetG("SelectedEasyRoomLeave"))) then
                 local ClosestMob
                 local ClosestMobRad = math.huge
