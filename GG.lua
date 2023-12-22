@@ -616,18 +616,21 @@ function()
             local ConvertedTimer = GetDungeonData("Easy","TimeToOpen"):split("Opens in")[2]:split("s")[1]
         end)
         
-        if GetDungeonData("Easy","Status") == "Opened" and GetDungeonData("Easy","TimeToStart") <= 20 and GetDungeonData("Easy","Mode") ~= "Dungeon" then
+        if (GetDungeonData("Easy","Status") == "Opened" and GetDungeonData("Easy","TimeToStart") <= 20) and GetDungeonData("Easy","Mode") ~= "Dungeon" or not game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Visible then
             if not _G.InTrial then
 
                 _G.InTrial = true
 
-                --pcall(function()
+                pcall(function()
+                    task.wait(2.5)
                     Teleport("Lobby")
                     task.wait(2.5)
                     TweenFunc1(game.Players.LocalPlayer.Character.HumanoidRootPart,0.1,workspace._AREAS.Lobby.Dungeon.Easy:GetModelCFrame())
-                --end)
-                    
-                break
+                end)
+                
+                repeat
+                    task.wait()
+                until GetDungeonData("Easy","Status") == "Running" or not GetG("AutoDungeon")
 
             end
         end
@@ -636,6 +639,7 @@ function()
             --if (GetDungeonData("Easy","Room") > tonumber(GetG("SelectedEasyRoomLeave"))) or (tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text) >= tonumber(GetG("SelectedEasyRoomLeave"))) then
                 local ClosestMob
                 local ClosestMobRad = math.huge
+                print("BBRUH")
                 --pcall(function()
                     for i,v in pairs(workspace._ENEMIES.Dungeon.Easy[DungeonData.Easy:GetAttribute("Room")]:GetChildren()) do
                         if v._STATS.CurrentHP.Value > 0 then
