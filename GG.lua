@@ -583,23 +583,12 @@ local Section = Tab:CreateSection("Settings",true) -- The 2nd argument is to tel
 
 createMultiSelectDropdown(Tab,"SelectedDungeons","SelectedDungeons", "Dungeons To Do",Dungeons)
 
-local Slider = Tab:CreateSlider({
-    Name = "Room To Leave [Easy]",
-    Range = {1, 50},
-    Increment = 1,
-    Suffix = "Room",
-    CurrentValue = 25,
-    Flag = "SelectedEasyRoomLeave", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-        _G.Settings.SelectedEasyRoomLeave = Value
-    end,
-})
 
 local RoomLeaveEasy = Tab:CreateLabel("Room To Leave [Easy]: ".._G.Settings.SelectedEasyRoomLeave)
 
 Tab:CreateInput({
-    Name = "Enter your Webhook URL",
-    PlaceholderText = "link",
+    Name = "Room To Leave [Easy]",
+    PlaceholderText = "Room",
     NumbersOnly = false, -- If the user can only type numbers.
     OnEnter = true, -- Will callback only if the user pressed ENTER while being focused.
     RemoveTextAfterFocusLost = true,
