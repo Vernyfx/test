@@ -527,7 +527,9 @@ function()
     while task.wait() do
 
         pcall(function()
-            Click()
+            if not _G.InTrial then
+                Click()
+            end
         end)
 
         task.wait(.05)
@@ -634,8 +636,8 @@ function()
             --if (GetDungeonData("Easy","Room") > tonumber(GetG("SelectedEasyRoomLeave"))) or (tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Mode.Content.Dungeon.Info.Room.Amount.Text) >= tonumber(GetG("SelectedEasyRoomLeave"))) then
                 local ClosestMob
                 local ClosestMobRad = math.huge
-                pcall(function()
-                    for i,v in pairs(workspace._ENEMIES.Dungeon.Easy[GetDungeonData("Easy","Room")]:GetChildren()) do
+                --pcall(function()
+                    for i,v in pairs(workspace._ENEMIES.Dungeon.Easy[DungeonData.Easy:GetAttribute("Room")]:GetChildren()) do
                         if v._STATS.CurrentHP.Value > 0 then
                             if getStudLength(v:GetModelCFrame()) < ClosestMobRad then
                                 ClosestMob = v
@@ -643,7 +645,7 @@ function()
                             end
                         end
                     end
-                end)
+                --end)
 
                 if ClosestMob then
                     local v = ClosestMob        
